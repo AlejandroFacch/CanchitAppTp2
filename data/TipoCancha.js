@@ -1,6 +1,5 @@
 const fs = require('fs').promises;
 const { ObjectID } = require('mongodb');
-const { parse } = require('path');
 const connection = require('./conexionMongo');  
 
 // GET todos los tipos de canchas
