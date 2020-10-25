@@ -2,8 +2,10 @@ const mongoose = require('mongoose')
 const express = require('express')
 const app = express()
 const usuario = require('./routes/usuario')
+const reserva = require('./routes/reserva')
 app.use(express.json())
 app.use('/api/usuarios/', usuario)
+app.use('/api/reservas/', reserva)
 const port = process.env.PORT || 3007
 app.listen(port, () => console.log('Escuchando puerto: ' +port))
 
