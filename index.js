@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const express = require('express')
 const app = express()
-const usuario = require('./routes/usuario')
+const usuario = require('./routes/usuario-ejemplo')
 const reserva = require('./routes/reserva')
 app.use(express.json())
 app.use('/api/usuarios/', usuario)

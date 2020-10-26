@@ -1,82 +1,67 @@
-const mongoose = require('mongoose')
-const express = require('express')
-const {Usuario} = require('../models/usuario')
-const router = express.Router()
-const { body, validationResult } = require('express-validator');
+let express = require('express');
+let router = express.Router();
+const dataUsuario = require('../data/usuario');
 
-router.get('/', async(req, res) => {
-    const usuarios = await Usuario.find()
-    res.send(usuarios)
-})
+//GET de todos los usuarios
+router.get('/', async (req,res)=>{
+    res.json(await dataUsuario.getUsuarios());
+});
 
-router.get('/:id', async(req, res) =>{
-    const usuario = await Usuario.findById(req.params.id)
-    if(!usuario) return res.status(404).send('No se ha encontrado al usuario con ese ID')
-    res.send(usuario)
-})
+// GET de un usuario en especifico, para buscar un usuario en particular.
+router.get('/:email', async (req,res)=>{
+    res.json(await dataUsuario.getUsuario(req.params.email));
+});
 
+// Borra un usuario en especifico
+router.delete('/:id', async (req,res)=> {
+    await dataUsuario.deleteUsuario(req.params.id);
+    res.send('Usuario eliminado');
+});
 
-//Usando express-validator
-//En este caso valido que el email sea un email con el @ y que el nombre sea mínimo de 3 caracteres
-router.post('/', [
-    body('email').isEmail(),
-    body('nombre').isLength({min: 3})
-], async(req, res) =>{
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
+// Modificar un usuario en especifico
+//Faltan los atributos que quiero modificar
+router.put('/:id', async (req,res)=> {
+    await dataUsuario.modificarUsuario(req.params.id);
+    res.send('Usuario modificado');
+});
+
+// Crear usuario
+//TERMINARLO
+router.post('/agregarUsuario',async  (req,res)=> {
+    const usuario = req.body;
+    if(Array.isArray(usuario)){
     
-    const usuario = new Usuario({
-        dni: req.body.dni,
-        nombre: req.body.nombre,
-        apellido: req.body.apellido,
-        email: req.body.email,
-        fecha_nacimiento: req.body.fecha_nacimiento
-    })
+        for (let index = 0; index < usuario.length; index++) {
+            const user = usuario[index];
+           
+            respuesta = await dataUsuario.verificarUsuario(user);
+            if(respuesta == false){
+              
+                await dataUsuario.agregarUsuario(user);
+            }
+        }
+        
+        // si el array tiene algun numero cargado, lo mostrara por mensaje al usuario para que sepa cual cancha no se cargo en la base
+        if(numeros.length == 1 ){
+            res.send(`La cancha numero ${numeros.toString()} ya existe`);
+        }else if(numeros.length > 1){
+            res.send(`Las canchas numero ${numeros.sort().toString()} ya existen`);
+        }
+    }else{
+        // si la cancha ingresada posee el mismo numero que alguna de la base de datos se rechaza el ingreso de la cancha
+        if( await dataCanchas.verificarCancha(cancha) == false){
+            await dataCanchas.agregarCancha(cancha);
+        }else{
+            res.send("El numero de cancha ingresado ya existe");
+        }
+        
 
-    const result = await usuario.save()
-    res.status(201).send(result)
-})
-
-
-router.put('/:id', [
-    body('email').isEmail(),
-    body('nombre').isLength({min: 3})
-], async(req, res) =>{
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
     }
 
-    const usuario = await Usuario.findByIdAndUpdate(req.params.id, {
-        dni: req.body.dni,
-        nombre: req.body.nombre,
-        apellido: req.body.apellido,
-        email: req.body.email,
-        fecha_nacimiento: req.body.fecha_nacimiento
-    },
-    {
-        new: true
-    })
-
-    if(!usuario){
-        return res.status(404).send('El usuario con ese id no existe')
-    }   
-    
-    res.status(204).send()
-
-})
+    const canchasPersistidas = await dataCanchas.getCanchas();
+        res.json(canchasPersistidas);
+});
 
 
-router.delete('/:id', async(req, res) => {
-    const usuario = await Usuario.findByIdAndDelete(req.params.id)
 
-    if(!usuario){
-        return res.status(404).send('Ese id no existe')
-    }
-
-    res.status(200).send('Usuario eliminado')
-})
-
-module.exports = router
+module.exports = router;

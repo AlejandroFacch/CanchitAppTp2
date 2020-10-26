@@ -1,6 +1,6 @@
 let express = require('express');
 let router = express.Router();
-const dataCanchas = require('./../data/Canchas');
+const dataCanchas = require('../data/cancha');
 
 // GET de una cancha segun su tipo de cancha, cuando el usuario seleccione el tipo de cancha donde quiere reservar, le trae la lista segun el tipo seleccionado
 router.get('/:descripcion',  async (req, res) => {

@@ -1,6 +1,6 @@
 let express = require('express');
 let router = express.Router();
-const dataTipoCancha = require('./../data/TipoCancha');
+const dataTipoCancha = require('../data/TipoCancha');
 
 // GET todas los tipos de canchas
 router.get('/',  async (req, res) => {
