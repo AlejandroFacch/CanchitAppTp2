@@ -79,10 +79,9 @@ async function verificarCancha (cancha){
     }
 
     if(existe){
-        return parseInt(cancha.numero);
-    }else{
-        return existe;
+        existe = parseInt(cancha.numero);
     }
+    return existe;
 }
 
 

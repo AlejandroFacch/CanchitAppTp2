@@ -26,40 +26,31 @@ router.put('/:id', async (req,res)=> {
 });
 
 // Crear usuario
-//TERMINARLO
+// NOTA : Revisarlo 
 router.post('/agregarUsuario',async  (req,res)=> {
     const usuario = req.body;
+
     if(Array.isArray(usuario)){
-    
+        //recorre el listado de usuarios
         for (let index = 0; index < usuario.length; index++) {
             const user = usuario[index];
-           
             respuesta = await dataUsuario.verificarUsuario(user);
             if(respuesta == false){
-              
                 await dataUsuario.agregarUsuario(user);
             }
         }
+    }else {
         
-        // si el array tiene algun numero cargado, lo mostrara por mensaje al usuario para que sepa cual cancha no se cargo en la base
-        if(numeros.length == 1 ){
-            res.send(`La cancha numero ${numeros.toString()} ya existe`);
-        }else if(numeros.length > 1){
-            res.send(`Las canchas numero ${numeros.sort().toString()} ya existen`);
-        }
-    }else{
-        // si la cancha ingresada posee el mismo numero que alguna de la base de datos se rechaza el ingreso de la cancha
-        if( await dataCanchas.verificarCancha(cancha) == false){
-            await dataCanchas.agregarCancha(cancha);
+        if( !await dataUsuario.verificarUsuario(user)){
+            await dataUsuario.agregarUsuario(user);
         }else{
-            res.send("El numero de cancha ingresado ya existe");
+            res.send(`El usuario con email : ${usuario.email} ya existe `);
         }
         
-
     }
 
-    const canchasPersistidas = await dataCanchas.getCanchas();
-        res.json(canchasPersistidas);
+    const usuariosPersistidos = await dataUsuario.getUsuarios();
+        res.json(usuariosPersistidos);
 });
 
 

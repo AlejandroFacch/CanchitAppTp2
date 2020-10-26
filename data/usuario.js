@@ -57,5 +57,15 @@ async function modificarUsuario (usuario){
     return usuarioModificado;
 }
 
+// Verificar usuario
+async function verificarUsuario (usuario) {
+    let existe = false;
+    let user = await getUsuario(usuario.email)
 
-module.exports = {getUsuarios, getUsuario, deleteUsuario, agregarUsuario, modificarUsuario}
+    if(user != null){
+        existe = true;
+    }
+        return existe;
+}
+
+module.exports = {getUsuarios, getUsuario, deleteUsuario, agregarUsuario, modificarUsuario, verificarUsuario}
