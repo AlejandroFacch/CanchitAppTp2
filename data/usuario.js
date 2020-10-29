@@ -2,7 +2,8 @@ const fs = require('fs').promises;
 const { ObjectID } = require('mongodb');
 const connection = require('./conexionMongo');  
 const bcrypt = require('bcryptjs');
-
+const jwt = require('jsonwebtoken');
+const ejwt = require('express-jwt');
 
 // GET todos los usuarios
 async function getUsuarios(){
@@ -87,7 +88,12 @@ async function logueo(email, password) {
     return user;
 }
 
+async function generarToken(usuario){
+    const secreto = 'canchitapp';
+    const token = jwt.sign({_id: usuario._id.toString()}, secreto, {expiresIn: '1h'});
+    return token;
+}
 
 
 
-module.exports = {getUsuarios, getUsuario, deleteUsuario, agregarUsuario, modificarUsuario, verificarUsuario, logueo}
+module.exports = {getUsuarios, getUsuario, deleteUsuario, agregarUsuario, modificarUsuario, verificarUsuario, logueo, generarToken}
