@@ -1,6 +1,7 @@
 const fs = require('fs').promises;
 const { ObjectID } = require('mongodb');
 const connection = require('./conexionMongo');  
+const bcrypt = require('bcryptjs');
 
 
 // GET todos los usuarios
@@ -8,7 +9,7 @@ async function getUsuarios(){
     const connectionMongo = await connection.getConnection();
     const usuarios = await connectionMongo
                          .db('canchitAppDB')
-                         .collection('usuario')
+                         .collection('usuarios')
                          .find()
                          .toArray();
      return usuarios;
@@ -22,7 +23,7 @@ async function getUsuarios(){
     const connectionMongo = await connection.getConnection();
     const usuario= await connectionMongo
                          .db('canchitAppDB')
-                         .collection('usuario')
+                         .collection('usuarios')
                          .findOne({email: email});
     return usuario;
 }
@@ -32,7 +33,7 @@ async function deleteUsuario(id){
     const connectionMongo = await connection.getConnection();
     let mongoId = new ObjectID(id);
     const usuarioEliminado = await connectionMongo.db('canchitAppDB')
-                            .collection('usuario')
+                            .collection('usuarios')
                             .deleteOne({_id: mongoId});
     return usuarioEliminado;
 }
@@ -40,9 +41,10 @@ async function deleteUsuario(id){
 // Agrega un solo usuario
 async function agregarUsuario (usuario){
     const connectionMongo = await connection.getConnection();
+    usuario.password = await bcrypt.hash(usuario.password, 8);
     const usuarioAgregado = await connectionMongo
                          .db('canchitAppDB')
-                         .collection('usuario')
+                         .collection('usuarios')
                          .insertOne(usuario);
     return usuarioAgregado;
 }
@@ -52,7 +54,7 @@ async function modificarUsuario (usuario){
     const connectionMongo = await connection.getConnection();
     const usuarioModificado = await connectionMongo
                          .db('canchitAppDB')
-                         .collection('usuario')
+                         .collection('usuarios')
                          .updateOne(usuario);
     return usuarioModificado;
 }
@@ -68,4 +70,24 @@ async function verificarUsuario (usuario) {
         return existe;
 }
 
-module.exports = {getUsuarios, getUsuario, deleteUsuario, agregarUsuario, modificarUsuario, verificarUsuario}
+
+async function logueo(email, password) {
+    const connectionMongo = await connection.getConnection();
+    const user = await connectionMongo.db('canchitAppDB')
+                        .collection('usuarios')
+                        .findOne({email: email});
+    if(!user){
+        throw new Error('Usuario o Contraseña incorrectos');
+    }
+    const isMatch = await bcrypt.compare(password, user.password);
+    if(!isMatch){
+        throw new Error('Usuario o Contraseña incorrectos');
+    }
+
+    return user;
+}
+
+
+
+
+module.exports = {getUsuarios, getUsuario, deleteUsuario, agregarUsuario, modificarUsuario, verificarUsuario, logueo}

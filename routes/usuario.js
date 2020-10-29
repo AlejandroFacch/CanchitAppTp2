@@ -30,27 +30,25 @@ router.put('/:id', async (req,res)=> {
 router.post('/agregarUsuario',async  (req,res)=> {
     const usuario = req.body;
 
-    if(Array.isArray(usuario)){
-        //recorre el listado de usuarios
-        for (let index = 0; index < usuario.length; index++) {
-            const user = usuario[index];
-            respuesta = await dataUsuario.verificarUsuario(user);
-            if(respuesta == false){
-                await dataUsuario.agregarUsuario(user);
-            }
-        }
-    }else {
-        
-        if( !await dataUsuario.verificarUsuario(user)){
-            await dataUsuario.agregarUsuario(user);
+        if( !await dataUsuario.verificarUsuario(usuario)){
+            await dataUsuario.agregarUsuario(usuario);
         }else{
-            res.send(`El usuario con email : ${usuario.email} ya existe `);
+            res.send(`El usuario con email ${usuario.email} ya existe `);
         }
-        
-    }
 
-    const usuariosPersistidos = await dataUsuario.getUsuarios();
-        res.json(usuariosPersistidos);
+        const usuarioPersistido = await dataUsuario.getUsuario(usuario.email);
+        res.json(usuarioPersistido);
+});
+
+router.post('/login',async  (req,res)=> {
+    try {
+        const usuario = await dataUsuario.logueo(req.body.email, req.body.password);
+        // generar un token
+        // const token = await datauser.generateAuthToken(user);
+        res.send({usuario});
+    } catch (error) {
+        res.status(401).send(error.message);
+    }
 });
 
 
