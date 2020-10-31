@@ -28,12 +28,12 @@ router.put('/:id', async (req, res)=> {
 // Crear reserva
 router.post('/agregarReserva',async (req, res)=> {
     const reserva = req.body;
-        if( !await dataReserva.verificarReserva(reserva)){
+        if( await dataReserva.chequeoReserva(reserva) == null){
             await dataReserva.agregarReserva(reserva);
         }else{
-            res.send(`La reserva ${reserva.id} ya existe :(`);
+            res.send(`La cancha no se encuentra disponible en esa fecha y hora :(`);
         }
-        const reservaPersistida = await dataReserva.getReserva(reserva.id);
+        const reservaPersistida = await dataReserva.chequeoReserva(reserva);
         res.json(reservaPersistida);
     return reserva;
 });

@@ -12,6 +12,17 @@ async function getReservas(){
                          .toArray();
      return reservas;
  }
+//Se utilizará para hacer una verificación cuando se reserve para evitar duplicaciones
+//Entre el momento en que pide los turnos disponibles y el momento en que reserva, 
+//otro usuario puede hacer la misma reserva.
+ async function chequeoReserva(reserva){
+    const connectionMongo = await connection.getConnection();
+    const reserva = await connectionMongo
+                         .db('canchitAppDB')
+                         .collection('reservas')
+                         .findOne({nroCancha: reserva.nroCancha, hora: reserva.hora, dia: reserva.dia})
+     return reserva;
+ }
 
  // GET de una reserva en especifica
  async function getReserva(id){
@@ -55,20 +66,21 @@ async function modificarReserva (reserva){
 }
 
 // Verificar reserva
-async function verificarReserva (reserva) {
+/* async function verificarReserva (reserva) {
     let existe = false;
     let miReserva = await getReserva(reserva.id);
     if(miReserva != null){
         existe = true;
     }
     return existe;
-}
+} */
+
 
 module.exports = {
   getReservas,
   getReserva,
+  chequeoReserva,
   deleteReserva,
   agregarReserva,
   modificarReserva,
-  verificarReserva
 };
