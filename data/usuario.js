@@ -16,9 +16,6 @@ async function getUsuarios(){
      return usuarios;
  }
 
-
-
-
  // GET de un usuario en especifico
  async function getUsuario(email){
     const connectionMongo = await connection.getConnection();
@@ -71,7 +68,6 @@ async function verificarUsuario (usuario) {
         return existe;
 }
 
-
 async function logueo(email, password) {
     const connectionMongo = await connection.getConnection();
     const user = await connectionMongo.db('canchitAppDB')
@@ -94,6 +90,13 @@ async function generarToken(usuario){
     return token;
 }
 
-
-
-module.exports = {getUsuarios, getUsuario, deleteUsuario, agregarUsuario, modificarUsuario, verificarUsuario, logueo, generarToken}
+module.exports = {
+  getUsuarios,
+  getUsuario,
+  deleteUsuario,
+  agregarUsuario,
+  modificarUsuario,
+  verificarUsuario,
+  logueo,
+  generarToken,
+};

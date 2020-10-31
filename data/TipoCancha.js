@@ -24,4 +24,4 @@ async function getAllTiposCanchas(){
     return tiposCanchas;
 }
 
-module.exports = {getAllTiposCanchas, getTipoCancha}
+module.exports = { getAllTiposCanchas, getTipoCancha };

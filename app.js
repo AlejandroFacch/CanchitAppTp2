@@ -9,7 +9,7 @@ var indexRouter = require('./routes/index');
 var tiposCanchasRouter= require('./routes/tipocancha');
 var canchasRouter= require('./routes/cancha');
 var usuariosRouter= require('./routes/usuario');
-// var reservasRouter= require('./routes/reservas');
+var reservasRouter= require('./routes/reserva');
 
 var app = express();
 
@@ -28,7 +28,7 @@ app.use('/', indexRouter);
 app.use('/api/tipocancha', tiposCanchasRouter);
 app.use('/api/cancha', canchasRouter);
 app.use('/api/usuarios', usuariosRouter);
-// app.use('/api/reservas', reservasRouter);
+app.use('/api/reservas', reservasRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

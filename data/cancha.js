@@ -84,11 +84,12 @@ async function verificarCancha (cancha){
     return existe;
 }
 
-
-
-
-
-
-
-
-module.exports = {getCanchasSegunTipo, getCancha, deleteCancha, agregarCancha, agregarCanchas, getCanchas, verificarCancha}
+module.exports = {
+  getCanchasSegunTipo,
+  getCancha,
+  deleteCancha,
+  agregarCancha,
+  agregarCanchas,
+  getCanchas,
+  verificarCancha,
+};
