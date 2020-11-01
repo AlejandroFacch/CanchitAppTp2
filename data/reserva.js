@@ -15,12 +15,12 @@ async function getReservas(){
 //Se utilizará para hacer una verificación cuando se reserve para evitar duplicaciones
 //Entre el momento en que pide los turnos disponibles y el momento en que reserva, 
 //otro usuario puede hacer la misma reserva.
- async function chequeoReserva(reserva){
+ async function chequeoReserva(reserve){
     const connectionMongo = await connection.getConnection();
     const reserva = await connectionMongo
                          .db('canchitAppDB')
                          .collection('reservas')
-                         .findOne({nroCancha: reserva.nroCancha, hora: reserva.hora, dia: reserva.dia})
+                         .findOne({nroCancha: reserve.nroCancha, hora: reserve.hora, dia: reserve.dia})
      return reserva;
  }
 

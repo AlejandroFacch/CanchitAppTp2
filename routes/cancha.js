@@ -2,6 +2,12 @@ let express = require('express');
 let router = express.Router();
 const dataCanchas = require('../data/cancha');
 
+//GET de todas las canchas
+router.get('/', async(req, res) => {
+    res.json(await dataCanchas.getCanchas());
+})
+
+
 // GET de una cancha segun su tipo de cancha, cuando el usuario seleccione el tipo de cancha donde quiere reservar, le trae la lista segun el tipo seleccionado
 router.get('/:descripcion',  async (req, res) => {
     res.json(await dataCanchas.getCanchasSegunTipo(req.params.descripcion));
@@ -11,7 +17,6 @@ router.get('/:descripcion',  async (req, res) => {
 router.get('/canchaNumero/:numero', async (req,res)=>{
     res.json(await dataCanchas.getCancha(req.params.numero));
 });
-
 // Borra una cancha en especifico
 router.delete('/:id', async (req,res)=> {
     await dataCanchas.deleteCancha(req.params.id);

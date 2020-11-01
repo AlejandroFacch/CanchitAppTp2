@@ -26,7 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 //app.use('/users', usersRouter);
 app.use('/api/tipocancha', tiposCanchasRouter);
-app.use('/api/cancha', canchasRouter);
+app.use('/api/canchas', canchasRouter);
 app.use('/api/usuarios', usuariosRouter);
 app.use('/api/reservas', reservasRouter);
 
