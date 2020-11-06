@@ -24,6 +24,20 @@ async function getReservas(){
      return reserva;
  }
 
+//devuelve una lista de reservas de una cancha en particular, de la fecha enviada en adelante
+//esto se utilizara para filtrar los dias y horas que no estara disponible la cancha
+ async function buscarReservasPorNroCanchaYFecha(numero){
+
+    const connectionMongo = await connection.getConnection();
+    const reservas = await connectionMongo
+                         .db('canchitAppDB')
+                         .collection('reservas')
+                         .find({nroCancha: numero})
+                         .toArray();
+     return reservas;
+
+ }
+
  // GET de una reserva en especifica
  async function getReserva(id){
     const connectionMongo = await connection.getConnection();
@@ -83,4 +97,5 @@ module.exports = {
   deleteReserva,
   agregarReserva,
   modificarReserva,
+  buscarReservasPorNroCanchaYFecha
 };
