@@ -60,8 +60,7 @@ router.get('/buscar/:numero', async (req, res) => {
     //De superarlo le agrega un dia para mostrar horarios de dias posteriores al actual
     if (hoy.hour() >= horaUltimoTurno){
         console.log(hoy.dayOfYear());
-        //Se le agrega un +2 al dia, ya que moment al poner date trae un numero anterior al dia actual
-        hoy = moment([hoy.year(), hoy.month(), hoy.date()+2, horaPrimerTurno, 0]);
+        hoy = moment([hoy.year(), hoy.month(), hoy.date()+1, horaPrimerTurno, 0]);
         
     }
 
@@ -73,29 +72,34 @@ router.get('/buscar/:numero', async (req, res) => {
         if (d == 0 && (moment().date() == hoy.date()) && (hoy.hour() >= horaPrimerTurno && hoy.hour() < horaUltimoTurno)){
           
             horaPrimerTurno = hoy.hour() + 1;
-            //se le agrega al dia de hoy la hora del primer turno nueva, y en date se agrega un +1 ya que el date trae un numero anterior al dia de hoy
-            hoy = moment([hoy.year(), hoy.month(), hoy.date()+1, horaPrimerTurno, 0]);
+            //se le agrega al dia de hoy la hora del primer turno nueva
+            hoy = moment([hoy.year(), hoy.month(), hoy.date(), horaPrimerTurno, 0]);
 
-        }
-        else
-        {
-            //De no estar dentro del rango coloca como primera hora el horario definido por el admin
-            horaPrimerTurno = 9;    
-        }
+        }else{
 
-        //este for va creando una lista de fechas con horarios, los cuales se utilizaran para que la persona reserve
+            horaPrimerTurno = 9;
+        }
+        
+        //se crea un objeto con la fecha
+        let dia = hoy.date()+d;
+        let date = new Date(hoy.year(), hoy.month(), dia, -3, 0);
+        let fecha = moment(date);
+        let diaYHora = {
+            dia: fecha,
+            horarios: []
+        }
+        let listaHoras = [];
+        //este for va creando una lista de horarios, los cuales se utilizaran para que la persona reserve
         for (let h = horaPrimerTurno; h <= horaUltimoTurno; h++) {
-            let dia = hoy.day()+d;
-            //en horario se le resta 3 ya que es por el horario de argentina.
-            let date = new Date(hoy.year(), hoy.month(), dia, h-3, 0);
-            listaReservas.push(
-
-                fecha = moment(date)
-                
-            );
+            
+            listaHoras.push(h);
             
         }
+        //se agrega al obejto creado anteriormente la lista de horarios y se agrega en la lista de turnos disponibles
+        diaYHora.horarios = listaHoras;
+        listaReservas.push(diaYHora);
     }
+    
 
     //Este if pregunta si la lista de turnos ocupados tiene algun dato
     if (reservasOcupadas.length > 0){
@@ -106,10 +110,19 @@ router.get('/buscar/:numero', async (req, res) => {
                     {
 
                         let turnoUtilizado = moment(reservasOcupadas[f].dia);
-                        //De existir fechas que coincidan se borraran de la lista de turnos disponibles.
-                        if (turnoUtilizado.year() == listaReservas[i].year() && turnoUtilizado.month() == listaReservas[i].month() && turnoUtilizado.date() == listaReservas[i].date() && reservasOcupadas[f].hora == (listaReservas[i].hour()+3))
+                        //De existir fechas que coincidan se pasara a verificar los horarios
+                        if (turnoUtilizado.year() == listaReservas[i].dia.year() && turnoUtilizado.month() == listaReservas[i].dia.month() && turnoUtilizado.date() == listaReservas[i].dia.date())
                         {
-                            listaReservas.splice(i, 1);
+                            for (let index = 0; index < listaReservas[i].horarios.length; index++) {
+                                const element = listaReservas[i].horarios[index];
+                                
+                                //verifica los horarios, si alguno coincide lo borra de la lista de horarios del objeto
+                                if(reservasOcupadas[f].hora == element){
+                                    listaReservas[i].horarios.splice(index, 1);
+                                }
+                                
+                            }
+                            
                         }
                     }
                 }
