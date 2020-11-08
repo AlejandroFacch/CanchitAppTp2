@@ -10,6 +10,7 @@ var tiposCanchasRouter= require('./routes/tipocancha');
 var canchasRouter= require('./routes/cancha');
 var usuariosRouter= require('./routes/usuario');
 var reservasRouter= require('./routes/reserva');
+var horariosRouter= require('./routes/horarioDeAtencion');
 
 var app = express();
 
@@ -29,6 +30,7 @@ app.use('/api/tipocancha', tiposCanchasRouter);
 app.use('/api/canchas', canchasRouter);
 app.use('/api/usuarios', usuariosRouter);
 app.use('/api/reservas', reservasRouter);
+app.use('/api/horariosAtencion', horariosRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
