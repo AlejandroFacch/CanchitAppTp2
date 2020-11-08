@@ -63,6 +63,7 @@ async function deleteReserva(id){
 // Agrega una sola reserca
 async function agregarReserva (reserva){
     const connectionMongo = await connection.getConnection();
+    reserva.dia=new Date(reserva.dia);
     const reservaAgregada = await connectionMongo
                          .db('canchitAppDB')
                          .collection('reservas')
