@@ -14,7 +14,7 @@ async function getHorarios(){
 
  async function modificarHorarios (horario){
     const connectionMongo = await connection.getConnection();
-    const usuarioModificado = await connectionMongo
+    const horarioModificado = await connectionMongo
                          .db('canchitAppDB')
                          .collection('horariosDeAtencion')
                          .updateOne(horario);

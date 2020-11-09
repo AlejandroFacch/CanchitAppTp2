@@ -60,7 +60,7 @@ async function modificarUsuario (usuario){
 // Verificar usuario
 async function verificarUsuario (usuario) {
     let existe = false;
-    let user = await getUsuario(usuario.email)
+    const user = await getUsuario(usuario.email)
 
     if(user != null){
         existe = true;
