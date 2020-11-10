@@ -4,6 +4,7 @@ const connection = require('./conexionMongo');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const ejwt = require('express-jwt');
+const dotenv = require('dotenv').config();
 
 // GET todos los usuarios
 async function getUsuarios(){
@@ -85,8 +86,7 @@ async function logueo(email, password) {
 }
 
 async function generarToken(usuario){
-    const secreto = 'canchitapp';
-    const token = jwt.sign({_id: usuario._id.toString()}, secreto, {expiresIn: '1h'});
+    const token = jwt.sign({_id: usuario._id.toString()}, process.env.SECRET, {expiresIn: '1h'});
     return token;
 }
 

@@ -3,10 +3,9 @@ const dataUsuario = require('../data/usuario');
 const dotenv = require('dotenv').config();
 
 async function autenticacion (req, res, next) {
-    const secreto = 'canchitapp';
     try {
         const token = await req.header('Authorization').replace('Bearer ', '')
-        const decodificado =await jwt.verify(token, secreto);
+        const decodificado =await jwt.verify(token, process.env.SECRET);
         const usuario =await dataUsuario.getUsuario(decodificado._id);
         next();
     } catch (error) {

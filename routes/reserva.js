@@ -50,7 +50,6 @@ router.get('/buscar/:numero', async (req, res) => {
     let listaReservas = [];
 
     moment().locale('es');
-    moment().tz("America/Argentina").format();
     //trae el dia de hoy
     let hoy = moment();
     //Son los horarios de funcionamiento de las canchas

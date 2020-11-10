@@ -139,10 +139,12 @@ function verificarListadoReservas(reservasOcupadas, listaReservas){
         //Estos for comparan la lista de turnos ocupados, con la de turnos libres creadas anteriormente
         for (let f = 0; f < reservasOcupadas.length; f++)
         {
+            let turnoUtilizado = moment(reservasOcupadas[f].dia);
+                console.log(turnoUtilizado.clone().add(1, 'day').format('dddd'));//devuelve el nombre del dia en string
             for (let i = 0; i <listaReservas.length; i++)
             {
 
-                let turnoUtilizado = moment(reservasOcupadas[f].dia);
+                
                 //De existir fechas que coincidan se pasara a verificar los horarios
                 if (turnoUtilizado.year() == listaReservas[i].dia.year() && turnoUtilizado.month() == listaReservas[i].dia.month() && turnoUtilizado.date() == listaReservas[i].dia.date())
                 {
