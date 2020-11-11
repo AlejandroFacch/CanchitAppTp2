@@ -10,7 +10,7 @@ router.get('/', auth, async (req,res)=>{
 });
 
 // GET de un usuario en especifico, para buscar un usuario en particular.
-router.get('/:email', async (req,res)=>{
+router.get('/:email',auth, async (req,res)=>{
     res.json(await dataUsuario.getUsuario(req.params.email));
 });
 
