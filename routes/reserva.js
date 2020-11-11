@@ -33,7 +33,7 @@ router.post('/agregarReserva',async (req, res)=> {
         if( await dataReserva.chequeoReserva(reserva) == null){
             await dataReserva.agregarReserva(reserva);
         }else{
-            res.send(`La cancha no se encuentra disponible en esa fecha y hora :(`);
+            res.json(`La cancha no se encuentra disponible en esa fecha y hora :(`);
         }
         const reservaPersistida = await dataReserva.chequeoReserva(reserva);
         res.json(reservaPersistida);
