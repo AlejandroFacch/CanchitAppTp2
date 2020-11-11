@@ -35,7 +35,7 @@ router.post('/agregarUsuario',async  (req,res)=> {
         if( !await dataUsuario.verificarUsuario(usuario)){
             await dataUsuario.agregarUsuario(usuario);
         }else{
-            res.send(`El usuario con email ${usuario.email} ya existe `);
+            res.json(`El usuario con email ${usuario.email} ya existe `);
         }
 
         const usuarioPersistido = await dataUsuario.getUsuario(usuario.email);
