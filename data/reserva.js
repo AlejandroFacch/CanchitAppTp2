@@ -109,7 +109,7 @@ function generacionListadoDisponibles(hoy, horaPrimerTurno, horaUltimoTurno, lis
         
         //se crea un objeto con la fecha
         let dia = hoy.date()+d;
-        let date = new Date(hoy.year(), hoy.month(), dia, -3, 0);
+        let date = new Date(hoy.year(), hoy.month(), dia, 0, 0);
         let fecha = moment(date);
         let diaYHora = {
             dia: fecha,
@@ -140,7 +140,7 @@ function verificarListadoReservas(reservasOcupadas, listaReservas){
         for (let f = 0; f < reservasOcupadas.length; f++)
         {
             let turnoUtilizado = moment(reservasOcupadas[f].dia);
-                console.log(turnoUtilizado.clone().add(1, 'day').format('dddd'));//devuelve el nombre del dia en string
+                console.log(turnoUtilizado.clone().format('dddd'));//devuelve el nombre del dia en string
             for (let i = 0; i <listaReservas.length; i++)
             {
 
