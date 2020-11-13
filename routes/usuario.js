@@ -47,7 +47,7 @@ router.post('/login',async  (req,res)=> {
         const usuario = await dataUsuario.logueo(req.body.email, req.body.password);
         // generar un token
         const token = await dataUsuario.generarToken(usuario);
-        res.send({usuario, token});
+        res.json({usuario, token});
     } catch (error) {
         res.status(401).send(error.message);
     }
