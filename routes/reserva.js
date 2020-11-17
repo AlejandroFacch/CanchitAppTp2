@@ -40,6 +40,12 @@ router.post('/agregarReserva',async (req, res)=> {
     return reserva;
 });
 
+router.get('/buscar/:cancha', async (req, res) => {
+    let numeroCancha = req.params.numero;
+    let reservas = await dataReserva.buscarReservasPorNroCanchaYFecha(numeroCancha);
+    res.json(reservas);
+})
+
 //Funcion que devuelve un listado de dias y horas disponibles para reservar
 router.get('/buscar/:numero', async (req, res) => {
     let numeroCancha = req.params.numero;
