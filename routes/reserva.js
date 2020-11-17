@@ -41,7 +41,7 @@ router.post('/agregarReserva',async (req, res)=> {
 });
 
 router.get('/reservas/:cancha', async (req, res) => {
-    let numeroCancha = req.params.numero;
+    let numeroCancha = req.params.cancha;
     let reservas = await dataReserva.buscarReservasPorNroCanchaYFecha(numeroCancha);
     res.json(reservas);
 })
