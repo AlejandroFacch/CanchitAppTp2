@@ -30,7 +30,7 @@ async function getReservas(){
  async function buscarReservasPorNroCanchaYFecha(numero){
 
     const connectionMongo = await connection.getConnection();
-    const hoy = moment(moment().year, moment().month, moment().date, 0, 0);
+    const hoy = moment().toDate();
     console.log(hoy);
     const reservas = await connectionMongo
                          .db('canchitAppDB')
