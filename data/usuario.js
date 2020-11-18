@@ -73,8 +73,7 @@ async function logueo(email, password) {
     const connectionMongo = await connection.getConnection();
     const user = await connectionMongo.db('canchitAppDB')
                         .collection('usuarios')
-                        .findOne({email: email})
-                        .close();
+                        .findOne({email: email});
     if(!user){
         throw new Error('Usuario o Contraseña incorrectos');
     }
