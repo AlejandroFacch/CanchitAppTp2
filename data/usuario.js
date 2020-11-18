@@ -1,5 +1,5 @@
 const fs = require('fs').promises;
-const { ObjectID } = require('mongodb');
+const { ObjectID} = require('mongodb');
 const connection = require('./conexionMongo');  
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -81,7 +81,7 @@ async function logueo(email, password) {
     if(!isMatch){
         throw new Error('Usuario o Contraseña incorrectos');
     }
-    await connectionMongo.close();
+    connection.closeConnection();
     return user;
 }
 

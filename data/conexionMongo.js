@@ -12,4 +12,8 @@ async function getConnection(){
     return await client.connect().catch(err => console.log(chalk.red(err)));
 }
 
-module.exports = { getConnection };
+async function closeConnection(){
+    return await client.close();
+}
+
+module.exports = { getConnection, closeConnection };
