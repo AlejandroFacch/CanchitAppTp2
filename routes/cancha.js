@@ -17,6 +17,21 @@ router.get('/:descripcion',  async (req, res) => {
 router.get('/canchaNumero/:numero', async (req,res)=>{
     res.json(await dataCanchas.getCancha(req.params.numero));
 });
+
+// PUT de una cancha en especifico, para buscar una cancha en particular.
+router.put('/:id', async (req,res)=>{
+    const cancha = req.body;
+
+    try{
+        cancha._id= req.params.id
+        const resultado = await dataCanchas.modificarCancha(cancha);
+        res.json(resultado);
+    } catch(error){
+        res.status(500).send(error);
+    }
+    
+});
+
 // Borra una cancha en especifico
 router.delete('/:id', async (req,res)=> {
     await dataCanchas.deleteCancha(req.params.id);
