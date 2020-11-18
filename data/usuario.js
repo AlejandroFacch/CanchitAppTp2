@@ -81,7 +81,7 @@ async function logueo(email, password) {
     if(!isMatch){
         throw new Error('Usuario o Contraseña incorrectos');
     }
-
+    await connectionMongo.close();
     return user;
 }
 
