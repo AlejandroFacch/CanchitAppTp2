@@ -67,7 +67,7 @@ async function deleteReserva(id){
     return reservaEliminada;
 }
 
-// Agrega una sola reserca
+// Agrega una sola reserva
 async function agregarReserva (reserva){
     const connectionMongo = await connection.getConnection();
     reserva.dia=new Date(reserva.dia);

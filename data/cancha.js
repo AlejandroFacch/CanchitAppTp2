@@ -76,6 +76,7 @@ async function deleteCancha(id) {
 // Agrega una sola cancha
 async function agregarCancha(cancha) {
     const connectionMongo = await connection.getConnection();
+    cancha.numero=Number(cancha.numero)
     const canchaAgregada = await connectionMongo
         .db('canchitAppDB')
         .collection('canchas')
