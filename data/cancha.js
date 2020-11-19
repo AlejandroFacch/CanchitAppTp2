@@ -46,6 +46,8 @@ async function getCancha(numero) {
 // Modificación de una cancha en especifico
 async function modificarCancha(cancha) {
     const connectionMongo = await connection.getConnection();
+    cancha.numero=Number(cancha.numero);
+    cancha.precio=Number(cancha.precio);
     let mongoId = new ObjectID(cancha.id);
     const modificaciones = {
         $set: {
@@ -76,7 +78,8 @@ async function deleteCancha(id) {
 // Agrega una sola cancha
 async function agregarCancha(cancha) {
     const connectionMongo = await connection.getConnection();
-    cancha.numero=Number(cancha.numero)
+    cancha.numero=Number(cancha.numero);
+    cancha.precio=Number(cancha.precio);
     const canchaAgregada = await connectionMongo
         .db('canchitAppDB')
         .collection('canchas')
