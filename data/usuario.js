@@ -54,10 +54,19 @@ async function agregarUsuario (usuario){
 // Modificar un solo usuario
 async function modificarUsuario (usuario){
     const connectionMongo = await connection.getConnection();
+    let mongoId = new ObjectID(usuario._id);
+    const modificaciones = {
+        $set: {
+            email: usuario.email,
+            nombre: usuario.nombre,
+            apellido: usuario.apellido,
+            telefono: usuario.telefono,
+        }
+    }
     const usuarioModificado = await connectionMongo
                          .db('canchitAppDB')
                          .collection('usuarios')
-                         .updateOne(usuario);
+                         .updateOne({ _id: mongoId }, modificaciones);
                          await connectionMongo.close();
     return usuarioModificado;
 }

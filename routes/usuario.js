@@ -23,7 +23,7 @@ router.delete('/:id', async (req,res)=> {
 // Modificar un usuario en especifico
 //Faltan los atributos que quiero modificar
 router.put('/:id', async (req,res)=> {
-    await dataUsuario.modificarUsuario(req.params.id);
+    await dataUsuario.modificarUsuario(req.body);
     res.send('Usuario modificado');
 });
 
