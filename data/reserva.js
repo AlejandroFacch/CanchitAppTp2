@@ -11,6 +11,7 @@ async function getReservas(){
                          .collection('reservas')
                          .find()
                          .toArray();
+                         await connectionMongo.close();
      return reservas;
  }
 //Se utilizará para hacer una verificación cuando se reserve para evitar duplicaciones
@@ -22,6 +23,7 @@ async function getReservas(){
                          .db('canchitAppDB')
                          .collection('reservas')
                          .findOne({nroCancha: reserve.nroCancha, hora: reserve.hora, dia: reserve.dia})
+                         await connectionMongo.close();
      return reserva;
  }
 
@@ -37,6 +39,7 @@ async function getReservas(){
                          .collection('reservas')
                          .find({nroCancha: numero, dia: {$gte: hoy}})
                          .toArray();
+                         await connectionMongo.close();
      return reservas;
 
  }
@@ -49,6 +52,7 @@ async function getReservas(){
                          .db('canchitAppDB')
                          .collection('reservas')
                          .findOne({ _id: mongoId });
+                         await connectionMongo.close();
     return reserva;
 }
 
@@ -59,6 +63,7 @@ async function deleteReserva(id){
     const reservaEliminada = await connectionMongo.db('canchitAppDB')
                             .collection('reservas')
                             .deleteOne({_id: mongoId});
+                            await connectionMongo.close();
     return reservaEliminada;
 }
 
@@ -70,6 +75,7 @@ async function agregarReserva (reserva){
                          .db('canchitAppDB')
                          .collection('reservas')
                          .insertOne(reserva);
+                         await connectionMongo.close();
     return reservaAgregada;
 }
 
@@ -80,6 +86,7 @@ async function modificarReserva (reserva){
                          .db('canchitAppDB')
                          .collection('reservas')
                          .updateOne(reserva);
+                         await connectionMongo.close();
     return reservaModificada;
 }
 

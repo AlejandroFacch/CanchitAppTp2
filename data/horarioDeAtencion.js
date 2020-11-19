@@ -9,6 +9,7 @@ async function getHorarios(){
                          .db('canchitAppDB')
                          .collection('horariosDeAtencion')
                          .findOne()
+                         await connectionMongo.close();
      return horarios;
  }
 
@@ -18,6 +19,7 @@ async function getHorarios(){
                          .db('canchitAppDB')
                          .collection('horariosDeAtencion')
                          .updateOne(horario);
+                         await connectionMongo.close();
     return horarioModificado;
 }
 

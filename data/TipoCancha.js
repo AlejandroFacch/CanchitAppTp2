@@ -10,6 +10,7 @@ async function getAllTiposCanchas(){
                          .collection('tipocancha')
                          .find()
                          .toArray();
+                         await connectionMongo.close();
      return tiposCanchas;
  }
 
@@ -21,6 +22,7 @@ async function getAllTiposCanchas(){
                          .db('canchitAppDB')
                          .collection('tipocancha')
                          .findOne({_id: mongoId });
+                         await connectionMongo.close();
     return tiposCanchas;
 }
 

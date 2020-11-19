@@ -6,9 +6,10 @@ const dotenv = require('dotenv').config();
 const uriMongo = process.env.URIMONGO;
 console.log(uriMongo);
 
-const client = new mongoClient(uriMongo, { useUnifiedTopology: true, useNewUrlParser: true });
+
 
 async function getConnection(){
+    const client = new mongoClient(uriMongo, {useUnifiedTopology: true, useNewUrlParser: true });
     return await client.connect().catch(err => console.log(chalk.red(err)));
 }
 

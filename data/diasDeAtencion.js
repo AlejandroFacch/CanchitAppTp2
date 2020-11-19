@@ -10,6 +10,7 @@ async function getDias(){
                          .collection('diasDeAtencion')
                          .find()
                          .toArray();
+                         await connectionMongo.close();
      return dias;
  }
 
@@ -19,6 +20,7 @@ async function getDias(){
                          .db('canchitAppDB')
                          .collection('diasDeAtencion')
                          .updateOne(dia);
+                         await connectionMongo.close();
     return diaModificado;
 }
 

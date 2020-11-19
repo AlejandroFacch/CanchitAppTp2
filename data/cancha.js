@@ -11,6 +11,7 @@ async function getCanchasSegunTipo(descripcion) {
         .collection('canchas')
         .find({ descripcion: descripcion })
         .toArray();
+        await connectionMongo.close();
     return canchas;
 }
 
@@ -22,6 +23,7 @@ async function getCanchas() {
         .collection('canchas')
         .find()
         .toArray();
+        await connectionMongo.close();
     return canchas;
 }
 
@@ -35,6 +37,7 @@ async function getCancha(numero) {
         .db('canchitAppDB')
         .collection('canchas')
         .findOne({ numero: numero });
+        await connectionMongo.close();
     return cancha;
 }
 
@@ -53,6 +56,7 @@ async function modificarCancha(cancha) {
         .db('canchitAppDB')
         .collection('canchas')
         .updateOne({ _id: mongoId }, modificaciones);
+        await connectionMongo.close();
     return canchaModificada;
 }
 
@@ -63,6 +67,7 @@ async function deleteCancha(id) {
     const canchaBorrada = await connectionMongo.db('canchitAppDB')
         .collection('canchas')
         .deleteOne({ _id: mongoId });
+        await connectionMongo.close();
     return canchaBorrada;
 }
 
@@ -73,6 +78,7 @@ async function agregarCancha(cancha) {
         .db('canchitAppDB')
         .collection('canchas')
         .insertOne(cancha);
+        await connectionMongo.close();
     return canchaAgregada;
 }
 
@@ -83,6 +89,7 @@ async function agregarCanchas(canchas) {
         .db('canchitAppDB')
         .collection('canchas')
         .insertMany(canchas);
+        await connectionMongo.close();
     return canchasAgregadas;
 }
 

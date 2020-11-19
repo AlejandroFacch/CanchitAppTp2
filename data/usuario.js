@@ -14,6 +14,7 @@ async function getUsuarios(){
                          .collection('usuarios')
                          .find()
                          .toArray();
+                         await connectionMongo.close();
      return usuarios;
  }
 
@@ -34,6 +35,7 @@ async function deleteUsuario(id){
     const usuarioEliminado = await connectionMongo.db('canchitAppDB')
                             .collection('usuarios')
                             .deleteOne({_id: mongoId});
+                            await connectionMongo.close();
     return usuarioEliminado;
 }
 
@@ -45,6 +47,7 @@ async function agregarUsuario (usuario){
                          .db('canchitAppDB')
                          .collection('usuarios')
                          .insertOne(usuario);
+                         await connectionMongo.close();
     return usuarioAgregado;
 }
 
@@ -55,6 +58,7 @@ async function modificarUsuario (usuario){
                          .db('canchitAppDB')
                          .collection('usuarios')
                          .updateOne(usuario);
+                         await connectionMongo.close();
     return usuarioModificado;
 }
 
@@ -74,6 +78,7 @@ async function logueo(email, password) {
     const user = await connectionMongo.db('canchitAppDB')
                         .collection('usuarios')
                         .findOne({email: email});
+                        await connectionMongo.close();
     if(!user){
         throw new Error('Usuario o Contraseña incorrectos');
     }
