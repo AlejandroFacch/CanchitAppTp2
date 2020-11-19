@@ -22,6 +22,7 @@ async function getCanchas() {
         .db('canchitAppDB')
         .collection('canchas')
         .find()
+        .sort('numero')
         .toArray();
         await connectionMongo.close();
     return canchas;
