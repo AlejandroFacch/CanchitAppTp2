@@ -18,11 +18,12 @@ async function getCanchasSegunTipo(descripcion) {
 // GET todas las canchas
 async function getCanchas() {
     const connectionMongo = await connection.getConnection();
+    var mysort = { numero: 1 };
     const canchas = await connectionMongo
         .db('canchitAppDB')
         .collection('canchas')
         .find()
-        .sort('numero')
+        .sort(mysort)
         .toArray();
         await connectionMongo.close();
     return canchas;
