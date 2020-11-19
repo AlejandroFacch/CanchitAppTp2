@@ -49,6 +49,7 @@ async function modificarCancha(cancha) {
     cancha.numero=Number(cancha.numero);
     cancha.precio=Number(cancha.precio);
     let mongoId = new ObjectID(cancha.id);
+    
     const modificaciones = {
         $set: {
             descripcion: cancha.descripcion,

@@ -23,13 +23,8 @@ router.put('/:id', async (req, res) => {
     const cancha = req.body;
 
     try {
-        respuesta = await dataCanchas.verificarCancha(cancha);
-        if (respuesta == false) {
             const resultado = await dataCanchas.modificarCancha(cancha);
             res.json(resultado);
-        }else{
-            res.send('La cancha ya existe.')
-        }
     } catch (error) {
         res.status(500).send(error);
     }
