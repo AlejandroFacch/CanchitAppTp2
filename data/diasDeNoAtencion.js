@@ -7,7 +7,7 @@ async function getDias(){
     const connectionMongo = await connection.getConnection();
     const dias = await connectionMongo
                          .db('canchitAppDB')
-                         .collection('diasDeAtencion')
+                         .collection('diasDeNoAtencion')
                          .find()
                          .toArray();
                          await connectionMongo.close();
@@ -18,7 +18,7 @@ async function getDias(){
     const connectionMongo = await connection.getConnection();
     const diaModificado = await connectionMongo
                          .db('canchitAppDB')
-                         .collection('diasDeAtencion')
+                         .collection('diasDeNoAtencion')
                          .updateOne(dia);
                          await connectionMongo.close();
     return diaModificado;

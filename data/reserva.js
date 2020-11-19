@@ -90,7 +90,7 @@ async function modificarReserva (reserva){
     return reservaModificada;
 }
 
-function generacionListadoDisponibles(hoy, horaPrimerTurno, horaUltimoTurno, listaReservas, horarios){
+function generacionListadoDisponibles(hoy, horaPrimerTurno, horaUltimoTurno, listaReservas, horarios, diasNoAtencion, reservasOcupadas){
 
     //En este if se fija si en la hora que me encuentro supera el ultimo horario de las canchas
     //De superarlo le agrega un dia para mostrar horarios de dias posteriores al actual
@@ -136,6 +136,9 @@ function generacionListadoDisponibles(hoy, horaPrimerTurno, horaUltimoTurno, lis
         listaReservas.push(diaYHora);
     }
 
+    listaReservas = verificarDiasDisponibles(diasNoAtencion, listaReservas);
+    listaReservas = verificarListadoReservas(reservasOcupadas, listaReservas);
+
     return listaReservas;
 }
 
@@ -149,7 +152,7 @@ function verificarListadoReservas(reservasOcupadas, listaReservas){
         for (let f = 0; f < reservasOcupadas.length; f++)
         {
             let turnoUtilizado = moment(reservasOcupadas[f].dia);
-                console.log(turnoUtilizado.clone().format('dddd'));//devuelve el nombre del dia en string
+                
             for (let i = 0; i <listaReservas.length; i++)
             {
 
@@ -177,15 +180,60 @@ function verificarListadoReservas(reservasOcupadas, listaReservas){
     return listaReservas;
 }
 
-// Verificar reserva
-/* async function verificarReserva (reserva) {
-    let existe = false;
-    let miReserva = await getReserva(reserva.id);
-    if(miReserva != null){
-        existe = true;
+
+
+function verificarDiasDisponibles(diasNoAtencion, listaReservas){
+
+
+    if (diasNoAtencion.length > 0){
+
+        let dia = '';
+
+    for (let d = 0; d < diasNoAtencion.length; d++)
+        {
+
+            dia = diasNoAtencion[d].dia;
+
+            switch (dia) {
+                case 'Lunes':
+                    dia = 'Monday';
+                  break;
+                case 'Martes':
+                    dia = 'Tuesday';
+                  break;
+                case 'Miércoles':
+                    dia = 'Wednesday';
+                  break;
+                case 'Jueves':
+                    dia = 'Thursday';
+                  break;
+                case 'Viernes':
+                    dia = 'Friday';
+                  break;
+                case 'Sábado':
+                    dia = 'Saturday';
+                  break;
+                case 'Domingo':
+                    dia = 'Sunday';
+                  break;
+              }
+
+            for (let i = 0; i <listaReservas.length; i++)
+            {
+
+                let diaReserva = moment(listaReservas[i].dia).format('dddd')
+                
+                if (dia == diaReserva)
+                {
+                    listaReservas.splice(i, 1);
+                    
+                }
+            }
+        }
     }
-    return existe;
-} */
+
+    return listaReservas;
+}
 
 
 module.exports = {
@@ -196,6 +244,5 @@ module.exports = {
   agregarReserva,
   modificarReserva,
   buscarReservasPorNroCanchaYFecha,
-  verificarListadoReservas,
   generacionListadoDisponibles
 };

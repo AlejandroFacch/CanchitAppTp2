@@ -2,6 +2,7 @@ let express = require('express');
 let router = express.Router();
 const dataReserva = require('../data/reserva');
 const dataHorarios = require('../data/horarioDeAtencion');
+const dataDiasNoAtencion = require('../data/diasDeNoAtencion');
 const moment = require('moment-timezone');
 
 //GET de todas las reservas
@@ -62,12 +63,9 @@ router.get('/buscar/:numero', async (req, res) => {
     let horarios = await dataHorarios.getHorarios()
     let horaPrimerTurno =  parseInt(horarios.horarioDeInicio);
     let horaUltimoTurno = parseInt(horarios.horarioDeCierre);
+    let diasNoAtencion = await dataDiasNoAtencion.getDias();
 
-    listaReservas = dataReserva.generacionListadoDisponibles(hoy, horaPrimerTurno, horaUltimoTurno, listaReservas, horarios);
-    
-    listaReservas = dataReserva.verificarListadoReservas(reservasOcupadas, listaReservas);
-    
-
+    listaReservas = dataReserva.generacionListadoDisponibles(hoy, horaPrimerTurno, horaUltimoTurno, listaReservas, horarios, diasNoAtencion, reservasOcupadas);
      res.json(listaReservas);
 });
 

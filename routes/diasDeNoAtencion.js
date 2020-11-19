@@ -1,6 +1,6 @@
 let express = require('express');
 let router = express.Router();
-const dataDia = require('../data/diasDeAtencion');
+const dataDia = require('../data/diasDeNoAtencion');
 
 
 router.get('/', async (req, res)=>{
