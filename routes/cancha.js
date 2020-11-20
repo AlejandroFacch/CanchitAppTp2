@@ -20,7 +20,7 @@ router.get('/canchaNumero/:numero', async (req, res) => {
 });
 
 // PUT de una cancha en especial
-router.put('/:id', async (req, res) => {
+router.put('/:id', auth ,async (req, res) => {
     const cancha = req.body;
 
     try {
