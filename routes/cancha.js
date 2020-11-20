@@ -35,8 +35,13 @@ router.put('/:id',  async (req, res) => {
 
 // Borra una cancha en especifico
 router.delete('/:id', async (req, res) => {
-    await dataCanchas.deleteCancha(req.params.id);
-    res.send('Cancha eliminada');
+    try{
+        await dataCanchas.deleteCancha(req.params.id);
+        res.json(true);
+    }catch(error){
+        res.status(500).send(error);
+    }
+    
 });
 
 
