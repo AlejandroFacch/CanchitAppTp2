@@ -4,7 +4,7 @@ const dataCanchas = require('../data/cancha');
 const auth = require('../middleware/autenticacion');
 
 //GET de todas las canchas
-router.get('/', auth, async (req, res) => {
+router.get('/',  async (req, res) => {
     res.json(await dataCanchas.getCanchas());
 })
 
@@ -20,7 +20,7 @@ router.get('/canchaNumero/:numero', async (req, res) => {
 });
 
 // PUT de una cancha en especial
-router.put('/:id', auth, async (req, res) => {
+router.put('/:id',  async (req, res) => {
     const cancha = req.body;
 
     try {
