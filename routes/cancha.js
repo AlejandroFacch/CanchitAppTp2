@@ -49,7 +49,7 @@ router.post('/agregarCanchas', async (req, res) => {
     let respuesta = await dataCanchas.verificarCancha(cancha);
     if (respuesta == false) {
         // agrega la cancha si no se encontro el mismo numero en la base
-        await dataCanchas.agregarCancha(c);
+        await dataCanchas.agregarCancha(cancha);
         res.json(true);
     } else {
         // si encontro el numero en la base, agrega dicho numero a un array para luego mostrarlo en un mensaje
