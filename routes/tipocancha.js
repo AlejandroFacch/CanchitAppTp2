@@ -4,7 +4,7 @@ const dataTipoCancha = require('../data/TipoCancha');
 const auth = require('../middleware/autenticacion');
 
 // GET todas los tipos de canchas
-router.get('/', auth, async (req, res) => {
+router.get('/', async (req, res) => {
     res.json(await dataTipoCancha.getAllTiposCanchas());
 });
 
