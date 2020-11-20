@@ -1,9 +1,10 @@
 let express = require('express');
 let router = express.Router();
 const dataCanchas = require('../data/cancha');
+const auth = require('../middleware/autenticacion');
 
 //GET de todas las canchas
-router.get('/', async (req, res) => {
+router.get('/',auth, async (req, res) => {
     res.json(await dataCanchas.getCanchas());
 })
 
