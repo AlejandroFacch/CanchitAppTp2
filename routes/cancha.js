@@ -46,7 +46,7 @@ router.post('/agregarCanchas', async (req, res) => {
     cancha.numero = Number(cancha.numero);
     cancha.precio = Number(cancha.precio);
 
-    let respuesta = await dataCanchas.verificarCancha(c);
+    let respuesta = await dataCanchas.verificarCancha(cancha);
     if (respuesta == false) {
         // agrega la cancha si no se encontro el mismo numero en la base
         await dataCanchas.agregarCancha(c);
