@@ -62,12 +62,12 @@ async function modificarUsuario (usuario){
             telefono: usuario.telefono,
         }
     }
-    const usuarioModificado = await connectionMongo
+    const respuesta = await connectionMongo
                          .db('canchitAppDB')
                          .collection('usuarios')
                          .updateOne({ email: usuario.email }, modificaciones);
                          await connectionMongo.close();
-    return usuarioModificado;
+    return respuesta;
 }
 
 // Modificar contraseña
