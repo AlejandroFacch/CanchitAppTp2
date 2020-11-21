@@ -241,9 +241,9 @@ async function getMiReserva(email){
     const reserva= await connectionMongo
                          .db('canchitAppDB')
                          .collection('reservas')
-                         .findOne({ email: email, dia: {$gte: hoy}, suspendida: false });
+                         .findOne({ email: email, suspendida: false });
                          await connectionMongo.close();
-    if (reserva == null) {        
+    if (!reserva) {        
         return false;
     } else {
         return reserva
