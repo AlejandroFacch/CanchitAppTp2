@@ -24,7 +24,7 @@ async function getDias(){
     const diaModificado = await connectionMongo
                          .db('canchitAppDB')
                          .collection('diasDeNoAtencion')
-                         .pullAll()
+                         .pullAll({dias})
                          .updateOne({},modificaciones);
                          await connectionMongo.close();
     return diaModificado;
