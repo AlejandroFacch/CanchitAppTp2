@@ -27,6 +27,12 @@ router.put('/:id', async (req,res)=> {
     res.send('Usuario modificado');
 });
 
+// Modificar contraseña
+router.put('/modificarContrasena/:id', async (req,res)=> {
+    await dataUsuario.modificarContrasena(req.body);
+    res.send('Contraseña modificada');
+});
+
 // Crear usuario
 // NOTA : Revisarlo 
 router.post('/agregarUsuario',async  (req,res)=> {
