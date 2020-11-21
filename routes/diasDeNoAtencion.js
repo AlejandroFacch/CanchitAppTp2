@@ -9,7 +9,7 @@ router.get('/', async (req, res)=>{
 
 router.put('/modificarDias', async (req, res)=> {
     await dataDia.modificarDias(req.body);
-    res.send('Dia modificado');
+    res.json(true);
 });
 
 
