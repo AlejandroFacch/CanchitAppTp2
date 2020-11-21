@@ -73,8 +73,6 @@ async function modificarUsuario (usuario){
 // Modificar contraseña
 async function modificarContrasena (usuario){
     const connectionMongo = await connection.getConnection();
-    //usuario.password=await bcrypt.hash(usuario.password,8);
-    //usuario.newPassword= await bcrypt.hash(usuario.newPassword,8);
     usuario.nuevaPassword= await bcrypt.hash(usuario.nuevaPassword,8);
     const user = await getUsuario(usuario.email)
     //let mongoId = new ObjectID(usuario._id);
