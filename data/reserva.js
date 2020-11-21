@@ -195,25 +195,25 @@ function verificarDiasDisponibles(diasNoAtencion, listaReservas){
             dia = diasNoAtencion[d].dia;
 
             switch (dia) {
-                case 'Lunes':
+                case '0':
                     dia = 'Monday';
                   break;
-                case 'Martes':
+                case '1':
                     dia = 'Tuesday';
                   break;
-                case 'Miércoles':
+                case '3':
                     dia = 'Wednesday';
                   break;
-                case 'Jueves':
+                case '4':
                     dia = 'Thursday';
                   break;
-                case 'Viernes':
+                case '5':
                     dia = 'Friday';
                   break;
-                case 'Sábado':
+                case '6':
                     dia = 'Saturday';
                   break;
-                case 'Domingo':
+                case '7':
                     dia = 'Sunday';
                   break;
               }
