@@ -69,6 +69,8 @@ router.get('/buscar/:numero', async (req, res) => {
      res.json(listaReservas);
 });
 
-
+router.get('/miReserva/:email', async (req, res) => {
+    res.json(await dataReserva.getMiReserva(req.params.email));
+})
 
 module.exports = router;

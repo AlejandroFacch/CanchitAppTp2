@@ -235,6 +235,25 @@ function verificarDiasDisponibles(diasNoAtencion, listaReservas){
     return listaReservas;
 }
 
+async function getMiReserva(email){
+    const connectionMongo = await connection.getConnection(); 
+    const hoy = moment().toDate(); 
+    const reserva= await connectionMongo
+                         .db('canchitAppDB')
+                         .collection('reservas')
+                         .findOne({ email: email, dia: {$gte: hoy}, suspendida: false });
+                         await connectionMongo.close();
+    if (reserva == null) {        
+        return false;
+    } else {
+        return reserva
+    }    
+    
+
+
+    //return reserva;
+}
+
 
 module.exports = {
   getReservas,
@@ -244,5 +263,6 @@ module.exports = {
   agregarReserva,
   modificarReserva,
   buscarReservasPorNroCanchaYFecha,
-  generacionListadoDisponibles
+  generacionListadoDisponibles,
+  getMiReserva
 };
