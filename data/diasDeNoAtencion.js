@@ -14,12 +14,17 @@ async function getDias(){
      return dias;
  }
 
- async function modificarDias (dia){
+ async function modificarDias (dias){
     const connectionMongo = await connection.getConnection();
+    const modificaciones = {
+        $set: {
+            dias: dias
+        }
+    }
     const diaModificado = await connectionMongo
                          .db('canchitAppDB')
                          .collection('diasDeNoAtencion')
-                         .updateOne(dia);
+                         .updateOne({},modificaciones);
                          await connectionMongo.close();
     return diaModificado;
 }
