@@ -8,8 +8,8 @@ router.get('/', async (req, res)=>{
 });
 
 router.put('/modificarHorario', async (req, res)=> {
-    await dataReserva.modificarHorarios(req.body);
-    res.send('Horario modificado');
+    await dataHorario.modificarHorarios(req.body);
+    res.json(true);
 });
 
 

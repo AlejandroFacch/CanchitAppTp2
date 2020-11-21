@@ -15,10 +15,16 @@ async function getHorarios(){
 
  async function modificarHorarios (horario){
     const connectionMongo = await connection.getConnection();
+    const modificaciones = {
+        $set: {
+            horarioDeInicio: horario.horarioDeInicio,
+            horarioDeCierre: horario.horarioDeCierre,
+        }
+    }
     const horarioModificado = await connectionMongo
                          .db('canchitAppDB')
                          .collection('horariosDeAtencion')
-                         .updateOne(horario);
+                         .updateOne({}, modificaciones);
                          await connectionMongo.close();
     return horarioModificado;
 }
