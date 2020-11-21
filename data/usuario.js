@@ -74,30 +74,33 @@ async function modificarUsuario (usuario){
 // Modificar contraseña
 async function modificarContrasena (usuario){
     const connectionMongo = await connection.getConnection();
-    usuario.password=await bcrypt.hash(usuario.password,8);
-    usuario.newPassword=await bcrypt.hash(usuario.newPassword,8);
-    usuario.confirmPassword=await bcrypt.hash(usuario.confirmPassword,8);
-
+    //usuario.password=await bcrypt.hash(usuario.password,8);
+    //usuario.newPassword= await bcrypt.hash(usuario.newPassword,8);
+    usuario.nuevaPassword= await bcrypt.hash(usuario.nuevaPassword,8);
     const user = await getUsuario(usuario.email)
+    //let mongoId = new ObjectID(usuario._id);
 
-    // let mongoId = new ObjectID(usuario.email);
-    let mongoId = new Object(usuario.email)
     console.log("Password :",user.password," Password  2:",usuario.password)
-
     console.log("new Password:",usuario.newPassword)
-    console.log("Confirm Password:",usuario.confirmPassword)
-    
-    //     const modificaciones= {
-    //         $set: {
-    //             password: usuario.newPassword
-    //         }};
-    // }
-    console.log("Nueva password",password)
-    const contrasenaModificada = await connectionMongo
+    console.log("Confirm Password:",usuario.nuevaContrasenia)
+
+    let bool = await bcrypt.compare(usuario.password, user.password)
+    console.log(bool)
+    if(bool) {
+        const modificaciones= {
+            $set: {
+                password: usuario.nuevaPassword
+            }};
+            const contrasenaModificada = await connectionMongo
                          .db('canchitAppDB')
                          .collection('usuarios')
-                         .updateOne({ _id: mongoId }, modificaciones);
+                         .updateOne({ email: usuario.email }, modificaciones);
                          await connectionMongo.close();
+    }else {
+        await connectionMongo.close();
+        return false;
+    }
+    
     return  contrasenaModificada;
 }
 
