@@ -28,17 +28,17 @@ router.put('/', async (req,res)=> {
 });
 
 // Modificar contraseña
-router.put('/modificarContrasena', async (req,res)=> {
-   try {
+router.put('/modificarContrasena/', async (req,res)=> {
+//    try {
        const respuesta = await dataUsuario.modificarContrasena(req.body)
        if(!respuesta) {
            res.json("Contraseña incorrecta")
        }else {
            res.json("Contraseña modificada")
        }
-   }catch (error) {
-    res.status(401).send(error.message);
-    }
+//    }catch (error) {
+//     res.status(401).send(error.message);
+//     }
 });
 
 // Crear usuario

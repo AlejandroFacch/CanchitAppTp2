@@ -80,8 +80,7 @@ async function modificarContrasena (usuario){
     //let mongoId = new ObjectID(usuario._id);
 
     console.log("Password :",user.password," Password  2:",usuario.password)
-    console.log("new Password:",usuario.newPassword)
-    console.log("Confirm Password:",usuario.nuevaContrasenia)
+    console.log("new Password:",usuario.nuevaPassword)
 
     let bool = await bcrypt.compare(usuario.password, user.password)
     console.log(bool)
@@ -95,12 +94,13 @@ async function modificarContrasena (usuario){
                          .collection('usuarios')
                          .updateOne({ email: usuario.email }, modificaciones);
                          await connectionMongo.close();
+            return contrasenaModificada;
     }else {
         await connectionMongo.close();
         return false;
     }
     
-    return  contrasenaModificada;
+    
 }
 
 // Verificar usuario
