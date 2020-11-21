@@ -24,7 +24,7 @@ router.delete('/:id', async (req,res)=> {
 //Faltan los atributos que quiero modificar
 router.put('/:id', async (req,res)=> {
     await dataUsuario.modificarUsuario(req.body);
-    res.send('Usuario modificado');
+    res.json(true);
 });
 
 // Modificar contraseña
