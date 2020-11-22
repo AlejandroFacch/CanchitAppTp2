@@ -8,8 +8,7 @@ async function getDias(){
     const dias = await connectionMongo
                          .db('canchitAppDB')
                          .collection('diasDeNoAtencion')
-                         .find()
-                         .toArray();
+                         .find();
                          await connectionMongo.close();
      return dias;
  }
