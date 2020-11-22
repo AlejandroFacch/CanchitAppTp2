@@ -104,6 +104,7 @@ async function modificarReserva(reserva){
 // Suspender una sola reserva
 async function suspenderReserva(reserva) {
     const connectionMongo = await connection.getConnection();
+    let mongoId = new ObjectID(reserva._id);
     reserva.suspendida = reserva.suspendida;
     let modificacion = {
       $set: {
