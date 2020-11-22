@@ -28,6 +28,19 @@ async function getReservas(){
      return reserva;
  }
 
+// Get Lista de Reservas, pero desde hoy en adelante
+async function getReservasPorFecha(){
+  const connectionMongo = await connection.getConnection();
+  const hoy = moment().toDate();
+  const reservas = await connectionMongo
+                       .db('canchitAppDB')
+                       .collection('reservas')
+                       .find({ dia: { $gte: hoy } })
+                       .toArray();
+                       await connectionMongo.close();
+  return reservas;
+}
+
 //devuelve una lista de reservas de una cancha en particular,
 //esto se utilizara para filtrar los dias y horas que no estara disponible la cancha
  async function buscarReservasPorNroCanchaYFecha(numero){
@@ -78,12 +91,30 @@ async function agregarReserva (reserva){
 }
 
 // Modificar una sola reserva
-async function modificarReserva (reserva){
+async function modificarReserva(reserva){
     const connectionMongo = await connection.getConnection();
     const reservaModificada = await connectionMongo
                          .db('canchitAppDB')
                          .collection('reservas')
                          .updateOne(reserva);
+                         await connectionMongo.close();
+    return reservaModificada;
+}
+
+// Suspender una sola reserva
+async function suspenderReserva(reserva) {
+    const connectionMongo = await connection.getConnection();
+    reserva.suspendida = reserva.suspendida;
+    let modificacion = {
+      $set: {
+        suspendida: !suspendida,
+      },
+    };
+
+    const reservaModificada = await connectionMongo
+                         .db('canchitAppDB')
+                         .collection('reservas')
+                         .updateOne({ _id: mongoId }, modificacion);
                          await connectionMongo.close();
     return reservaModificada;
 }
@@ -166,41 +197,37 @@ function verificarListadoReservas(reservasOcupadas, listaReservas){
 
 
 function verificarDiasDisponibles(diasNoAtencion, listaReservas){
-
-    if (diasNoAtencion.dias.dias.length > 0){
+    if (diasNoAtencion.dias.dias.length > 0) {
         let dia = '';
-    for (let d = 0; d < diasNoAtencion.dias.dias.length; d++)
-        {
+        for (let d = 0; d < diasNoAtencion.dias.dias.length; d++) {
             dia = diasNoAtencion.dias.dias[d];
             switch (dia) {
-                case 0:
+                case 'Lunes':
                     dia = 'Monday';
                   break;
-                case 1:
+                case 'Martes':
                     dia = 'Tuesday';
                   break;
-                case 2:
+                case 'Miércoles':
                     dia = 'Wednesday';
                   break;
-                case 3:
+                case 'Jueves':
                     dia = 'Thursday';
                   break;
-                case 4:
+                case 'Viernes':
                     dia = 'Friday';
                   break;
-                case 5:
+                case 'Sábado':
                     dia = 'Saturday';
                   break;
-                case 6:
+                case 'Domingo':
                     dia = 'Sunday';
                   break;
               }
 
-            for (let i = 0; i <listaReservas.length; i++)
-            {
+            for (let i = 0; i <listaReservas.length; i++) {
                 let diaReserva = moment(listaReservas[i].dia).format('dddd')   
-                if (dia == diaReserva)
-                {
+                if (dia == diaReserva) {
                     listaReservas.splice(i, 1);
                 }
             }
@@ -213,7 +240,6 @@ function verificarDiasDisponibles(diasNoAtencion, listaReservas){
 async function getMiReserva(email){
     const connectionMongo = await connection.getConnection(); 
     const hoy = moment(new Date(moment().year(), moment().month(), moment().date(),0,0)).toDate(); 
-    console.log(hoy);
     const reserva= await connectionMongo
                          .db('canchitAppDB')
                          .collection('reservas')
@@ -231,9 +257,11 @@ module.exports = {
   getReservas,
   getReserva,
   chequeoReserva,
+  getReservasPorFecha,
   deleteReserva,
   agregarReserva,
   modificarReserva,
+  suspenderReserva,
   buscarReservasPorNroCanchaYFecha,
   generacionListadoDisponibles,
   getMiReserva

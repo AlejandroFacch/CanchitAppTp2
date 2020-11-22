@@ -8,13 +8,13 @@ const dataDiasNoAtencion = require('../data/diasDeNoAtencion');
 const moment = require('moment-timezone');
 
 // GET de todas las reservas
-router.get('/', async (req, res)=>{
+router.get('/', async (req, res) => {
     res.json(await dataReserva.getReservas());
 });
 
 // GET de todas las reservas desde la fecha
-router.get('/:hoy', async (req, res)=>{
-    res.json(await dataReserva.getReservas(req.params.hoy));
+router.get('/:hoy', async (req, res) => {
+    res.json(await dataReserva.getReservasPorFecha(req.params.hoy));
 });
 
 // GET de una reserva especifica, para buscar una reserva en particular.
@@ -35,12 +35,24 @@ router.put('/:id', async (req, res)=> {
     res.send('Reserva modificada');
 });
 
-// Crear reserva
-router.post('/agregarReserva',async (req, res)=> {
+// Suspender reserva
+router.put('/:id', async (req, res) => {
     const reserva = req.body;
-        if( await dataReserva.chequeoReserva(reserva) == null){
+
+    try {
+      const resultado = await dataReserva.suspenderReserva(reserva);
+      res.json(resultado)
+    } catch (error) {
+      res.status(500).send(error);
+    }
+});
+
+// Crear reserva
+router.post('/agregarReserva', async (req, res)=> {
+    const reserva = req.body;
+        if (await dataReserva.chequeoReserva(reserva) == null) {
             await dataReserva.agregarReserva(reserva);
-        }else{
+        } else {
             res.json(`La cancha no se encuentra disponible en esa fecha y hora :(`);
         }
         const reservaPersistida = await dataReserva.chequeoReserva(reserva);
