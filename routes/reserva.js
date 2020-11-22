@@ -2,6 +2,8 @@ let express = require('express');
 let router = express.Router();
 const dataReserva = require('../data/reserva');
 const dataHorarios = require('../data/horarioDeAtencion');
+const dataUsuarios = require('../data/usuario');
+const dataCanchas = require('../data/cancha');
 const dataDiasNoAtencion = require('../data/diasDeNoAtencion');
 const moment = require('moment-timezone');
 
@@ -74,6 +76,21 @@ router.get('/buscar/:numero', async (req, res) => {
 
 router.get('/miReserva/:email', async (req, res) => {
     res.json(await dataReserva.getMiReserva(req.params.email));
-})
+});
+
+router.post('/cancelacionReserva/', async (req, res)=> {
+
+    let borrado = await dataReserva.deleteReserva(req.body.reserva._id);
+    if(borrado.result.ok == 1){
+    let cancha = await dataCanchas.getCancha(parseInt(req.body.reserva.nroCancha));
+    req.body.usuario.montoADevolver += cancha.precio;
+    await dataUsuarios.modificarUsuario(req.body.usuario);
+    res.json('Reserva cancelada')
+    }else{
+        res.json("No se pudo realizar la cancelación");
+    }
+    
+
+});
 
 module.exports = router;
