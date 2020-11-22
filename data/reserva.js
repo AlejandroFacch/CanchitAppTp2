@@ -167,15 +167,10 @@ function verificarListadoReservas(reservasOcupadas, listaReservas){
 function verificarDiasDisponibles(diasNoAtencion, listaReservas){
 
     if (diasNoAtencion.dias.dias.length > 0){
-
         let dia = '';
-
     for (let d = 0; d < diasNoAtencion.dias.dias.length; d++)
         {
-
             dia = diasNoAtencion.dias.dias[d];
-            console.log(dia);
-
             switch (dia) {
                 case 0:
                     dia = 'Monday';
