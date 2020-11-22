@@ -27,6 +27,20 @@ async function getReservas(){
      return reserva;
  }
 
+// Get Lista de Reservas, pero desde hoy en adelante
+async function getReservasPorFecha(){
+  const connectionMongo = await connection.getConnection();
+  const hoy = moment().toDate();
+  const reservas = await connectionMongo
+                       .db('canchitAppDB')
+                       .collection('reservas')
+                       .find({ dia: { $gte: hoy } })
+                       .toArray();
+                       await connectionMongo.close();
+  console.log(reservas);
+  return reservas;
+}
+
 //devuelve una lista de reservas de una cancha en particular,
 //esto se utilizara para filtrar los dias y horas que no estara disponible la cancha
  async function buscarReservasPorNroCanchaYFecha(numero){
@@ -77,12 +91,30 @@ async function agregarReserva (reserva){
 }
 
 // Modificar una sola reserva
-async function modificarReserva (reserva){
+async function modificarReserva(reserva){
     const connectionMongo = await connection.getConnection();
     const reservaModificada = await connectionMongo
                          .db('canchitAppDB')
                          .collection('reservas')
                          .updateOne(reserva);
+                         await connectionMongo.close();
+    return reservaModificada;
+}
+
+// Suspender una sola reserva
+async function suspenderReserva(reserva) {
+    const connectionMongo = await connection.getConnection();
+    reserva.suspendida = reserva.suspendida;
+    let modificacion = {
+      $set: {
+        suspendida: !suspendida,
+      },
+    };
+
+    const reservaModificada = await connectionMongo
+                         .db('canchitAppDB')
+                         .collection('reservas')
+                         .updateOne({ _id: mongoId }, modificacion);
                          await connectionMongo.close();
     return reservaModificada;
 }
@@ -228,9 +260,11 @@ module.exports = {
   getReservas,
   getReserva,
   chequeoReserva,
+  getReservasPorFecha,
   deleteReserva,
   agregarReserva,
   modificarReserva,
+  suspenderReserva,
   buscarReservasPorNroCanchaYFecha,
   generacionListadoDisponibles,
   getMiReserva

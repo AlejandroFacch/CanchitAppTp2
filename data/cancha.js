@@ -29,9 +29,6 @@ async function getCanchas() {
     return canchas;
 }
 
-
-
-
 // GET de una cancha en especifico
 async function getCancha(numero) {
     const connectionMongo = await connection.getConnection();
@@ -46,10 +43,10 @@ async function getCancha(numero) {
 // Modificación de una cancha en especifico
 async function modificarCancha(cancha) {
     const connectionMongo = await connection.getConnection();
-    cancha.numero=Number(cancha.numero);
-    cancha.precio=Number(cancha.precio);
+    cancha.numero = Number(cancha.numero);
+    cancha.precio = Number(cancha.precio);
     let mongoId = new ObjectID(cancha.id);
-    
+
     const modificaciones = {
         $set: {
             descripcion: cancha.descripcion,
