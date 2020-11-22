@@ -75,13 +75,7 @@ async function modificarContrasena (usuario){
     const connectionMongo = await connection.getConnection();
     usuario.nuevaPassword= await bcrypt.hash(usuario.nuevaPassword,8);
     const user = await getUsuario(usuario.email)
-    //let mongoId = new ObjectID(usuario._id);
-
-    console.log("Password :",user.password," Password  2:",usuario.password)
-    console.log("new Password:",usuario.nuevaPassword)
-
     let bool = await bcrypt.compare(usuario.password, user.password)
-    console.log(bool)
     if(bool) {
         const modificaciones= {
             $set: {
