@@ -19,6 +19,7 @@ async function getReservas(){
 //otro usuario puede hacer la misma reserva.
  async function chequeoReserva(reserve){
     const connectionMongo = await connection.getConnection();
+    reserve.dia=new Date(reserve.dia);
     const reserva = await connectionMongo
                          .db('canchitAppDB')
                          .collection('reservas')
