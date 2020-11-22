@@ -60,6 +60,7 @@ async function modificarUsuario (usuario){
             nombre: usuario.nombre,
             apellido: usuario.apellido,
             telefono: usuario.telefono,
+            montoADevolver: usuario.montoADevolver
         }
     }
     const respuesta = await connectionMongo

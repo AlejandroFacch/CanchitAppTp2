@@ -37,7 +37,6 @@ async function getReservasPorFecha(){
                        .find({ dia: { $gte: hoy } })
                        .toArray();
                        await connectionMongo.close();
-  console.log(reservas);
   return reservas;
 }
 
@@ -45,7 +44,7 @@ async function getReservasPorFecha(){
 //esto se utilizara para filtrar los dias y horas que no estara disponible la cancha
  async function buscarReservasPorNroCanchaYFecha(numero){
     const connectionMongo = await connection.getConnection();
-    const hoy = moment().toDate();
+    const hoy = moment(new Date(moment().year(), moment().month(), moment().date(),0,0)).toDate();
     const reservas = await connectionMongo
                          .db('canchitAppDB')
                          .collection('reservas')
@@ -197,11 +196,10 @@ function verificarListadoReservas(reservasOcupadas, listaReservas){
 
 
 function verificarDiasDisponibles(diasNoAtencion, listaReservas){
-    if (diasNoAtencion.length > 0){
+    if (diasNoAtencion.dias.dias.length > 0) {
         let dia = '';
-    for (let d = 0; d < diasNoAtencion.length; d++)
-        {
-            dia = diasNoAtencion[d].dia;
+        for (let d = 0; d < diasNoAtencion.dias.dias.length; d++) {
+            dia = diasNoAtencion.dias.dias[d];
             switch (dia) {
                 case 'Lunes':
                     dia = 'Monday';
@@ -226,11 +224,9 @@ function verificarDiasDisponibles(diasNoAtencion, listaReservas){
                   break;
               }
 
-            for (let i = 0; i <listaReservas.length; i++)
-            {
+            for (let i = 0; i <listaReservas.length; i++) {
                 let diaReserva = moment(listaReservas[i].dia).format('dddd')   
-                if (dia == diaReserva)
-                {
+                if (dia == diaReserva) {
                     listaReservas.splice(i, 1);
                 }
             }
@@ -242,11 +238,11 @@ function verificarDiasDisponibles(diasNoAtencion, listaReservas){
 
 async function getMiReserva(email){
     const connectionMongo = await connection.getConnection(); 
-    const hoy = moment().toDate(); 
+    const hoy = moment(new Date(moment().year(), moment().month(), moment().date(),0,0)).toDate(); 
     const reserva= await connectionMongo
                          .db('canchitAppDB')
                          .collection('reservas')
-                         .findOne({ email: email, suspendida: false });
+                         .findOne({ email: email, dia: {$gte: hoy} , suspendida: false });
                          await connectionMongo.close();
     if (!reserva) {        
         return false;
