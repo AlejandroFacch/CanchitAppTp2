@@ -211,11 +211,12 @@ function verificarDiasDisponibles(diasNoAtencion, listaReservas){
 
 async function getMiReserva(email){
     const connectionMongo = await connection.getConnection(); 
-    const hoy = moment().toDate(); 
+    const hoy = moment(new Date(moment().year(), moment().month(), moment().date(),0,0)).toDate(); 
+    console.log(hoy);
     const reserva= await connectionMongo
                          .db('canchitAppDB')
                          .collection('reservas')
-                         .findOne({ email: email, suspendida: false });
+                         .findOne({ email: email, dia: {$gte: hoy} , suspendida: false });
                          await connectionMongo.close();
     if (!reserva) {        
         return false;
