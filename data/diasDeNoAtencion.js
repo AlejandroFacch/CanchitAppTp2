@@ -10,6 +10,7 @@ async function getDias(){
                          .collection('diasDeNoAtencion')
                          .findOne();
                          await connectionMongo.close();
+                         console.log(dias)
      return dias;
  }
 

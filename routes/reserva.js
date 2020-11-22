@@ -63,7 +63,7 @@ router.get('/buscar/:numero', async (req, res) => {
     let horarios = await dataHorarios.getHorarios()
     let horaPrimerTurno =  parseInt(horarios.horarioDeInicio);
     let horaUltimoTurno = parseInt(horarios.horarioDeCierre);
-    let diasNoAtencion = await dataDiasNoAtencion.getDias().dias;
+    let diasNoAtencion = await dataDiasNoAtencion.getDias().dias.dias;
 
     listaReservas = dataReserva.generacionListadoDisponibles(hoy, horaPrimerTurno, horaUltimoTurno, listaReservas, horarios, diasNoAtencion, reservasOcupadas);
      res.json(listaReservas);
