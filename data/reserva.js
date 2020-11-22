@@ -165,31 +165,37 @@ function verificarListadoReservas(reservasOcupadas, listaReservas){
 
 
 function verificarDiasDisponibles(diasNoAtencion, listaReservas){
-    if (diasNoAtencion.length > 0){
+
+    if (diasNoAtencion.dias.dias.length > 0){
+
         let dia = '';
-    for (let d = 0; d < diasNoAtencion.length; d++)
+
+    for (let d = 0; d < diasNoAtencion.dias.dias.length; d++)
         {
-            dia = diasNoAtencion[d].dia;
+
+            dia = diasNoAtencion.dias.dias[d];
+            console.log(dia);
+
             switch (dia) {
-                case 'Lunes':
+                case 0:
                     dia = 'Monday';
                   break;
-                case 'Martes':
+                case 1:
                     dia = 'Tuesday';
                   break;
-                case 'Miércoles':
+                case 2:
                     dia = 'Wednesday';
                   break;
-                case 'Jueves':
+                case 3:
                     dia = 'Thursday';
                   break;
-                case 'Viernes':
+                case 4:
                     dia = 'Friday';
                   break;
-                case 'Sábado':
+                case 5:
                     dia = 'Saturday';
                   break;
-                case 'Domingo':
+                case 6:
                     dia = 'Sunday';
                   break;
               }
