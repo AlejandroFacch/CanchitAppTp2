@@ -15,7 +15,7 @@ router.get('/:email',auth, async (req,res)=>{
 });
 
 // Borra un usuario en especifico
-router.delete('/:id', async (req,res)=> {
+router.delete('/:id', auth, async (req,res)=> {
     await dataUsuario.deleteUsuario(req.params.id);
     res.send('Usuario eliminado');
 });
@@ -28,7 +28,7 @@ router.put('/', async (req,res)=> {
 });
 
 // Modificar contraseña
-router.put('/modificarContrasena/', async (req,res)=> {
+router.put('/modificarContrasena/', auth, async (req,res)=> {
 //    try {
        const respuesta = await dataUsuario.modificarContrasena(req.body)
        if(!respuesta) {

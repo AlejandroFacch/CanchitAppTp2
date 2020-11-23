@@ -1,13 +1,13 @@
 let express = require('express');
 let router = express.Router();
 const dataHorario = require('../data/horarioDeAtencion');
+const auth = require('../middleware/autenticacion');
 
-
-router.get('/', async (req, res)=>{
+router.get('/',auth, async (req, res)=>{
     res.json(await dataHorario.getHorarios());
 });
 
-router.put('/modificarHorario', async (req, res)=> {
+router.put('/modificarHorario',auth, async (req, res)=> {
     await dataHorario.modificarHorarios(req.body);
     res.json(true);
 });
