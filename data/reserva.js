@@ -28,14 +28,14 @@ async function getReservas(){
      return reserva;
  }
 
-// Get Lista de Reservas, pero desde hoy en adelante
+// Get Lista de Reservas, pero desde hoy en adelante, sin mostras las suspendidas
 async function getReservasPorFecha(){
   const connectionMongo = await connection.getConnection();
   const hoy = moment(new Date(moment().year(), moment().month(), moment().date(),0,0)).toDate();
   const reservas = await connectionMongo
                        .db('canchitAppDB')
                        .collection('reservas')
-                       .find({ dia: { $gte: hoy } })
+                       .find({ dia: { $gte: hoy }, suspendida: false})
                        .toArray();
                        await connectionMongo.close();
   return reservas;
