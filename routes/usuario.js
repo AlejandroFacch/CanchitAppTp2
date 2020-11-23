@@ -46,15 +46,15 @@ router.put('/modificarContrasena/', auth, async (req,res)=> {
 // NOTA : Revisarlo 
 router.post('/agregarUsuario',async  (req,res)=> {
     const usuario = req.body;
+    const token;
         if (!await dataUsuario.verificarUsuario(usuario)) {
             await dataUsuario.agregarUsuario(usuario);
-            const token = await dataUsuario.generarToken(usuario);
-            res.json(token);
+            token = await dataUsuario.generarToken(usuario);
         } else {
             res.json(`El usuario con email ${usuario.email} ya existe `);
         }
         const usuarioPersistido = await dataUsuario.getUsuario(usuario.email);
-        res.json(usuarioPersistido);
+        res.json(usuarioPersistido, token);
 });
 
 router.post('/login',async  (req,res)=> {
