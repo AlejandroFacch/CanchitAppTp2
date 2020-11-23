@@ -48,7 +48,7 @@ router.delete('/:id', async (req, res) => {
 
 
 // Cuando el admin selecciona los tipos de cancha y las cantidades de cada uno para dar de alta en la app.
-router.post('/agregarCanchas',ejwt({ secret: process.env.SECRET, algorithms: [process.env.CODIFICACION]}), async (req, res) => {
+router.post('/agregarCanchas',auth, async (req, res) => {
     const cancha = req.body;
     cancha.numero = Number(cancha.numero);
     cancha.precio = Number(cancha.precio);
