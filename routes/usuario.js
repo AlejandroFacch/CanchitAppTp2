@@ -1,4 +1,5 @@
 let express = require('express');
+const { token } = require('morgan');
 let router = express.Router();
 const dataUsuario = require('../data/usuario');
 const auth = require('../middleware/autenticacion');
@@ -45,13 +46,13 @@ router.put('/modificarContrasena/', async (req,res)=> {
 // NOTA : Revisarlo 
 router.post('/agregarUsuario',async  (req,res)=> {
     const usuario = req.body;
-
         if (!await dataUsuario.verificarUsuario(usuario)) {
             await dataUsuario.agregarUsuario(usuario);
+            const token = await dataUsuario.generarToken(usuario);
+            res.json(token);
         } else {
             res.json(`El usuario con email ${usuario.email} ya existe `);
         }
-
         const usuarioPersistido = await dataUsuario.getUsuario(usuario.email);
         res.json(usuarioPersistido);
 });
