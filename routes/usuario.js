@@ -48,7 +48,6 @@ router.post('/agregarUsuario',async  (req,res)=> {
 
         if (!await dataUsuario.verificarUsuario(usuario)) {
             await dataUsuario.agregarUsuario(usuario);
-            await dataUsuario.logueo(usuario.email, usuario.password);
         } else {
             res.json(`El usuario con email ${usuario.email} ya existe `);
         }
