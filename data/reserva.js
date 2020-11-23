@@ -31,7 +31,7 @@ async function getReservas(){
 // Get Lista de Reservas, pero desde hoy en adelante
 async function getReservasPorFecha(){
   const connectionMongo = await connection.getConnection();
-  const hoy = moment().toDate();
+  const hoy = moment(new Date(moment().year(), moment().month(), moment().date(),0,0)).toDate();
   const reservas = await connectionMongo
                        .db('canchitAppDB')
                        .collection('reservas')
@@ -46,6 +46,7 @@ async function getReservasPorFecha(){
  async function buscarReservasPorNroCanchaYFecha(numero){
     const connectionMongo = await connection.getConnection();
     const hoy = moment(new Date(moment().year(), moment().month(), moment().date(),0,0)).toDate();
+    console.log(hoy);
     const reservas = await connectionMongo
                          .db('canchitAppDB')
                          .collection('reservas')
@@ -166,11 +167,13 @@ function generacionListadoDisponibles(hoy, horaPrimerTurno, horaUltimoTurno, lis
 
 function verificarListadoReservas(reservasOcupadas, listaReservas){
     //Este if pregunta si la lista de turnos ocupados tiene algun dato
+    console.log(reservasOcupadas);
     if (reservasOcupadas.length > 0){
         //Estos for comparan la lista de turnos ocupados, con la de turnos libres creadas anteriormente
         for (let f = 0; f < reservasOcupadas.length; f++)
         {
             let turnoUtilizado = moment(reservasOcupadas[f].dia);
+            console.log(turnoUtilizado);
             for (let i = 0; i <listaReservas.length; i++)
             {
                 //De existir fechas que coincidan se pasara a verificar los horarios
@@ -180,6 +183,7 @@ function verificarListadoReservas(reservasOcupadas, listaReservas){
                     let encontrado = false;
                     while(encontrado == false && index < listaReservas[i].horarios.length){
                         const element = listaReservas[i].horarios[index];
+                        
                         //verifica los horarios, si alguno coincide lo borra de la lista de horarios del objeto
                         if(reservasOcupadas[f].hora == element){
                             listaReservas[i].horarios.splice(index, 1);
