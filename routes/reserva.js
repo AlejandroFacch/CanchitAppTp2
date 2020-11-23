@@ -68,7 +68,7 @@ router.get('/reservas/:cancha', async (req, res) => {
 
 // Funcion que devuelve un listado de dias y horas disponibles para reservar
 router.get('/buscar/:numero', async (req, res) => {
-    let numeroCancha = req.params.numero;
+    let numeroCancha = parseInt(req.params.numero);
     // Trae las reservas existentes segun el numero de cancha enviado
     let reservasOcupadas = await dataReserva.buscarReservasPorNroCanchaYFecha(numeroCancha);
     let listaReservas = [];
