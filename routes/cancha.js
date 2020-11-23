@@ -2,9 +2,11 @@ let express = require('express');
 let router = express.Router();
 const dataCanchas = require('../data/cancha');
 const auth = require('../middleware/autenticacion');
+const ejwt = require('express-jwt');
+const dotenv = require('dotenv').config(); 
 
 //GET de todas las canchas
-router.get('/',  async (req, res) => {
+router.get('/', auth,  async (req, res) => {
     res.json(await dataCanchas.getCanchas());
 })
 
@@ -46,7 +48,7 @@ router.delete('/:id', async (req, res) => {
 
 
 // Cuando el admin selecciona los tipos de cancha y las cantidades de cada uno para dar de alta en la app.
-router.post('/agregarCanchas', async (req, res) => {
+router.post('/agregarCanchas',ejwt({ secret: process.env.SECRET, algorithms: [process.env.CODIFICACION]}), async (req, res) => {
     const cancha = req.body;
     cancha.numero = Number(cancha.numero);
     cancha.precio = Number(cancha.precio);

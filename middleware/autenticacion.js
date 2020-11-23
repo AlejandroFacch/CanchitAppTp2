@@ -5,8 +5,7 @@ const dotenv = require('dotenv').config();
 async function autenticacion (req, res, next) {
     try {
         const token = await req.header('Authorization').replace('Bearer ', '')
-        const decodificado =await jwt.verify(token, process.env.SECRET);
-        const usuario =await dataUsuario.getUsuario(decodificado._id);
+        await jwt.verify(token, process.env.SECRET);
         next();
     } catch (error) {
         res.status(401).send(error.message);
