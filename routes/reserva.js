@@ -37,8 +37,7 @@ router.put('/:id', async (req, res)=> {
 
 // Suspender reserva
 router.put('/suspender/:id', async (req, res) => {
-    const reserva = req.body;
-
+    const reserva = req.params;
     try {
       const resultado = await dataReserva.suspenderReserva(reserva);
       res.json(resultado)
