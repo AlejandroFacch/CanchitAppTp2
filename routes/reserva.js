@@ -76,6 +76,7 @@ router.get('/buscar/:numero',auth, async (req, res) => {
     moment().locale('es');
     // trae el dia de hoy
     let hoy = moment();
+    hoy.hour(moment().hour()-3);
     // Son los horarios de funcionamiento de las canchas
     let horarios = await dataHorarios.getHorarios()
     let horaPrimerTurno =  parseInt(horarios.horarioDeInicio);
