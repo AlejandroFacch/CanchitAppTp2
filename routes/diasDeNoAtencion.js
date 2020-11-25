@@ -8,8 +8,12 @@ router.get('/',auth, async (req, res)=>{
 });
 
 router.put('/modificarDias',auth, async (req, res)=> {
-    await dataDia.modificarDias(req.body);
-    res.json(true);
+    try {
+        await dataDia.modificarDias(req.body);
+        res.json(true);
+    } catch (error) {
+        res.status(500).send(error);
+    }
 });
 
 

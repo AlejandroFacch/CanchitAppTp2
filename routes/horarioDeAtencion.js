@@ -8,8 +8,12 @@ router.get('/',auth, async (req, res)=>{
 });
 
 router.put('/modificarHorario',auth, async (req, res)=> {
-    await dataHorario.modificarHorarios(req.body);
-    res.json(true);
+    try {
+        await dataHorario.modificarHorarios(req.body);
+        res.json(true);
+    } catch (error) {
+        res.status(500).send(error);
+    }
 });
 
 

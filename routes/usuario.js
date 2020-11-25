@@ -15,33 +15,6 @@ router.get('/:email', auth, async (req, res) => {
     res.json(await dataUsuario.getUsuario(req.params.email));
 });
 
-// Borra un usuario en especifico
-router.delete('/:id', auth, async (req, res) => {
-    await dataUsuario.deleteUsuario(req.params.id);
-    res.send('Usuario eliminado');
-});
-
-// Modificar un usuario en especifico
-//Faltan los atributos que quiero modificar
-router.put('/', async (req, res) => {
-    let respuesta = await dataUsuario.modificarUsuario(req.body);
-    res.json(respuesta.modifiedCount);
-});
-
-// Modificar contraseña
-router.put('/modificarContrasena/', auth, async (req, res) => {
-    //    try {
-    const respuesta = await dataUsuario.modificarContrasena(req.body)
-    if (!respuesta) {
-        res.json("Contraseña incorrecta")
-    } else {
-        res.json("Contraseña modificada")
-    }
-    //    }catch (error) {
-    //     res.status(401).send(error.message);
-    //     }
-});
-
 // Crear usuario
 // NOTA : Revisarlo 
 router.post('/agregarUsuario', async (req, res) => {
@@ -67,6 +40,31 @@ router.post('/login', async (req, res) => {
     }
 });
 
+// Modificar un usuario en especifico
+//Faltan los atributos que quiero modificar
+router.put('/', async (req, res) => {
+  let respuesta = await dataUsuario.modificarUsuario(req.body);
+  res.json(respuesta.modifiedCount);
+});
 
+// Modificar contraseña
+router.put('/modificarContrasena/', auth, async (req, res) => {
+  try {
+      const respuesta = await dataUsuario.modificarContrasena(req.body)
+      if (!respuesta) {
+          res.json("Contraseña incorrecta")
+      } else {
+          res.json("Contraseña modificada")
+      }
+  } catch (error) {
+      res.status(401).send(error.message);
+  }
+});
+
+// Borra un usuario en especifico
+router.delete('/:id', auth, async (req, res) => {
+  await dataUsuario.deleteUsuario(req.params.id);
+  res.send('Usuario eliminado');
+});
 
 module.exports = router;
