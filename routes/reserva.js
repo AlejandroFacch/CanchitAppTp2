@@ -9,56 +9,58 @@ const moment = require('moment-timezone');
 const auth = require('../middleware/autenticacion');
 
 // GET de todas las reservas
-router.get('/',auth, async (req, res) => {
+router.get('/', auth, async (req, res) => {
     res.json(await dataReserva.getReservas());
 });
 
 // GET de todas las reservas desde la fecha
-router.get('/:hoy',auth, async (req, res) => {
+router.get('/:hoy', auth, async (req, res) => {
     res.json(await dataReserva.getReservasPorFecha(req.params.hoy));
 });
 
 // GET de una reserva especifica, para buscar una reserva en particular.
-router.get('/:id',auth, async (req, res) => {
+router.get('/:id', auth, async (req, res) => {
     res.json(await dataReserva.getReserva(req.params.id));
 });
 
-router.get('/miReserva/:email',auth, async (req, res) => {
+router.get('/miReserva/:email', auth, async (req, res) => {
   res.json(await dataReserva.getMiReserva(req.params.email));
 });
 
-router.get('/reservas/:cancha',auth, async (req, res) => {
+router.get('/reservas/:cancha', auth, async (req, res) => {
   let numeroCancha = req.params.cancha;    
   let reservas = await dataReserva.buscarReservasPorNroCanchaYFecha(numeroCancha);
   res.json(reservas);
 })
 
 // Funcion que devuelve un listado de dias y horas disponibles para reservar
-router.get('/buscar/:numero',auth, async (req, res) => {
-  let numeroCancha = parseInt(req.params.numero);
-  try {
-      // Trae las reservas existentes segun el numero de cancha enviado
-      let reservasOcupadas = await dataReserva.buscarReservasPorNroCanchaYFecha(numeroCancha);
-      let listaReservas = [];
-  
-      moment().locale('es');
-      // trae el dia de hoy
-      let hoy = moment();
-      // Son los horarios de funcionamiento de las canchas
-      let horarios = await dataHorarios.getHorarios()
-      let horaPrimerTurno =  parseInt(horarios.horarioDeInicio);
-      let horaUltimoTurno = parseInt(horarios.horarioDeCierre);
-      let diasNoAtencion = await dataDiasNoAtencion.getDias();
-  
-      listaReservas = dataReserva.generacionListadoDisponibles(hoy, horaPrimerTurno, horaUltimoTurno, listaReservas, horarios, diasNoAtencion, reservasOcupadas);
-      res.json(listaReservas);
+router.get('/buscar/:numero', auth, async (req, res) => {
+    let numeroCancha = parseInt(req.params.numero);
+
+    try {
+    // Trae las reservas existentes segun el numero de cancha enviado
+    let reservasOcupadas = await dataReserva.buscarReservasPorNroCanchaYFecha(numeroCancha);
+    let listaReservas = [];
+
+    moment().locale('es');
+    // trae el dia de hoy
+    let hoy = moment();
+    hoy.hour(moment().hour()-3);
+    // Son los horarios de funcionamiento de las canchas
+    let horarios = await dataHorarios.getHorarios()
+    let horaPrimerTurno =  parseInt(horarios.horarioDeInicio);
+    let horaUltimoTurno = parseInt(horarios.horarioDeCierre);
+    let diasNoAtencion = await dataDiasNoAtencion.getDias();
+
+    listaReservas = dataReserva.generacionListadoDisponibles(hoy, horaPrimerTurno, horaUltimoTurno, listaReservas, horarios, diasNoAtencion, reservasOcupadas);
+    res.json(listaReservas);
   } catch (error) {
       res.status(500).send(error);  
   }
 });
 
 // Crear reserva
-router.post('/agregarReserva',auth, async (req, res)=> {
+router.post('/agregarReserva', auth, async (req, res)=> {
     const reserva = req.body;
 
     try {
@@ -75,7 +77,7 @@ router.post('/agregarReserva',auth, async (req, res)=> {
     }
 });
 
-router.post('/cancelacionReserva/',auth, async (req, res)=> {
+router.post('/cancelacionReserva/', auth, async (req, res)=> {
     try {
         let borrado = await dataReserva.deleteReserva(req.body.reserva._id);
         if (borrado.result.ok == 1) {
@@ -90,7 +92,7 @@ router.post('/cancelacionReserva/',auth, async (req, res)=> {
     } catch (error) {
         res.status(500).send(error);
     }
-});
+})
 
 // Modificar una reserva especifica
 // Faltan los atributos que quiero modificar
@@ -104,7 +106,7 @@ router.put('/:id',auth, async (req, res)=> {
 });
 
 // Suspender reserva
-router.put('/suspender/:id',auth, async (req, res) => {
+router.put('/suspender/:id', auth, async (req, res) => {
   const reserva = req.params;
   try {
     const resultado = await dataReserva.suspenderReserva(reserva);
