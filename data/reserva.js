@@ -52,6 +52,10 @@ async function buscarReservasPorNroCanchaYFecha(numero) {
         .collection('reservas')
         .find({ nroCancha: numero, dia: { $gte: hoy } })
         .toArray();
+    
+        if(reservas== null){
+            throw new Error('Parametros enviados incorrectos');
+        }
     await connectionMongo.close();
     return reservas;
 }
