@@ -12,21 +12,28 @@ router.get('/', auth, async (req, res) => {
 
 // GET de un usuario en especifico, para buscar un usuario en particular.
 router.get('/:email', auth, async (req, res) => {
-    res.json(await dataUsuario.getUsuario(req.params.email));
+    try {
+        res.json(await dataUsuario.getUsuario(req.params.email));
+    } catch (error) {
+        res.status(404).send(error.message);
+    }
 });
 
 // Crear usuario
 // NOTA : Revisarlo 
 router.post('/agregarUsuario', async (req, res) => {
     const usuario = req.body;
-    if (!await dataUsuario.verificarUsuario(usuario)) {
-        await dataUsuario.agregarUsuario(usuario);
-        const usuarioPersistido = await dataUsuario.getUsuario(usuario.email);
-        const token = await dataUsuario.generarToken(usuarioPersistido);
-        res.json({usuarioPersistido, token});
-    } else {
-        res.json(`El usuario con email ${usuario.email} ya existe `);
+    try {
+        if (!await dataUsuario.verificarUsuario(usuario)) {
+            await dataUsuario.agregarUsuario(usuario);
+            const usuarioPersistido = await dataUsuario.getUsuario(usuario.email);
+            const token = await dataUsuario.generarToken(usuarioPersistido);
+            res.json({ usuarioPersistido, token });
+        }
+    } catch (error) {
+        res.status(400).send(error.message);
     }
+
 });
 
 router.post('/login', async (req, res) => {
@@ -41,30 +48,36 @@ router.post('/login', async (req, res) => {
 });
 
 // Modificar un usuario en especifico
-//Faltan los atributos que quiero modificar
 router.put('/', async (req, res) => {
-  let respuesta = await dataUsuario.modificarUsuario(req.body);
-  res.json(respuesta.modifiedCount);
+    try{
+        let respuesta = await dataUsuario.modificarUsuario(req.body);
+        res.json("Cambios realizados con éxito.");
+    }catch(error){
+        res.status(400).send(error.message);
+    }
+    
 });
 
 // Modificar contraseña
 router.put('/modificarContrasena/', auth, async (req, res) => {
-  try {
-      const respuesta = await dataUsuario.modificarContrasena(req.body)
-      if (!respuesta) {
-          res.json("Contraseña incorrecta")
-      } else {
-          res.json("Contraseña modificada")
-      }
-  } catch (error) {
-      res.status(401).send(error.message);
-  }
+    try {
+        const respuesta = await dataUsuario.modificarContrasena(req.body)
+        res.json("Contraseña modificada.")
+
+    } catch (error) {
+        res.status(401).send(error.message);
+    }
 });
 
 // Borra un usuario en especifico
 router.delete('/:id', auth, async (req, res) => {
-  await dataUsuario.deleteUsuario(req.params.id);
-  res.send('Usuario eliminado');
+    try{
+        await dataUsuario.deleteUsuario(req.params.id);
+        res.json('Usuario eliminado.');
+    }catch(error){
+        res.status(400).send(error.message);
+    }
+    
 });
 
 module.exports = router;
