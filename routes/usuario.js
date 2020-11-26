@@ -15,7 +15,7 @@ router.get('/:email', auth, async (req, res) => {
     try {
         res.json(await dataUsuario.getUsuario(req.params.email));
     } catch (error) {
-        res.status(404).send(error.message);
+        res.status(400).send(error.message);
     }
 });
 

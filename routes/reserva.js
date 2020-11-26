@@ -20,7 +20,11 @@ router.get('/:hoy', auth, async (req, res) => {
 
 // GET de una reserva especifica, para buscar una reserva en particular.
 router.get('/:id', auth, async (req, res) => {
+  try{
     res.json(await dataReserva.getReserva(req.params.id));
+  }catch(error){
+    res.status(400).send(error.message);
+  }
 });
 
 router.get('/miReserva/:email', auth, async (req, res) => {
@@ -122,7 +126,7 @@ router.delete('/:id',auth, async (req, res)=> {
       await dataReserva.deleteReserva(req.params.id);
       res.send('Reserva eliminada');
   } catch (error) {
-      res.status(500).send(error);
+      res.status(400).send(error);
   }
 });
 
