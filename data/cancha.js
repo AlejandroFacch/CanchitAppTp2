@@ -26,6 +26,9 @@ async function getCanchas() {
         .sort(mysort)
         .toArray();
         await connectionMongo.close();
+    if(canchas == null){
+        throw new Error('La canchas no se encuentra registrado.');
+    }
     return canchas;
 }
 
@@ -37,6 +40,9 @@ async function getCancha(numero) {
         .collection('canchas')
         .findOne({ numero: numero });
         await connectionMongo.close();
+    if(cancha == null){
+        throw new Error('La canchas no se encuentra registrado.');
+    }
     return cancha;
 }
 
@@ -59,6 +65,9 @@ async function modificarCancha(cancha) {
         .collection('canchas')
         .updateOne({ _id: mongoId }, modificaciones);
         await connectionMongo.close();
+    if(canchaModificada.descripcion === null || canchaModificada.numero  === null || canchaModificada.precio === null){
+        throw new Error('El usuario no se pudo modificar.');
+    }
     return canchaModificada;
 }
 
