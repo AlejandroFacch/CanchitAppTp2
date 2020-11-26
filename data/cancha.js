@@ -27,7 +27,7 @@ async function getCanchas() {
         .toArray();
         await connectionMongo.close();
     if(canchas == null){
-        throw new Error('La canchas no se encuentra registrado.');
+        throw new Error('No hay canchas cargadas.');
     }
     return canchas;
 }
@@ -35,14 +35,13 @@ async function getCanchas() {
 // GET de una cancha en especifico
 async function getCancha(numero) {
     const connectionMongo = await connection.getConnection();
+    numero = parseInt(numero);
     const cancha = await connectionMongo
         .db('canchitAppDB')
         .collection('canchas')
         .findOne({ numero: numero });
         await connectionMongo.close();
-    if(cancha == null){
-        throw new Error('La canchas no se encuentra registrado.');
-    }
+
     return cancha;
 }
 
