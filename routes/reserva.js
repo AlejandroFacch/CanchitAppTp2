@@ -14,7 +14,7 @@ router.get('/', auth, async (req, res) => {
 });
 
 // GET de todas las reservas desde la fecha
-router.get('/:hoy', auth, async (req, res) => {
+router.get('/hoy/:hoy', auth, async (req, res) => {
     res.json(await dataReserva.getReservasPorFecha(req.params.hoy));
 });
 

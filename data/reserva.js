@@ -45,6 +45,7 @@ async function getReservasPorFecha() {
 //esto se utilizara para filtrar los dias y horas que no estara disponible la cancha
 async function buscarReservasPorNroCanchaYFecha(numero) {
     const connectionMongo = await connection.getConnection();
+    numero = parseInt(numero);
     const hoy = moment(new Date(moment().year(), moment().month(), moment().date(), 0, 0)).toDate();
     console.log(hoy);
     const reservas = await connectionMongo
