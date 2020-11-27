@@ -49,8 +49,8 @@ router.post('/login', async (req, res) => {
 // Modificar un usuario en especifico
 router.put('/', async (req, res) => {
     try{
-        let respuesta = await dataUsuario.modificarUsuario(req.body);
-        res.json(respuesta);
+        await dataUsuario.modificarUsuario(req.body);
+        res.json(true);
     }catch(error){
         res.status(400).send(error.message);
     }
