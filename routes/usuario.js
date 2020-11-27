@@ -20,7 +20,6 @@ router.get('/:email', auth, async (req, res) => {
 });
 
 // Crear usuario
-// NOTA : Revisarlo 
 router.post('/agregarUsuario', async (req, res) => {
     const usuario = req.body;
     try {
@@ -51,7 +50,7 @@ router.post('/login', async (req, res) => {
 router.put('/', async (req, res) => {
     try{
         let respuesta = await dataUsuario.modificarUsuario(req.body);
-        res.json("Cambios realizados con éxito.");
+        res.json(respuesta);
     }catch(error){
         res.status(400).send(error.message);
     }
