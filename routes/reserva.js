@@ -14,18 +14,10 @@ router.get('/', auth, async (req, res) => {
 });
 
 // GET de todas las reservas desde la fecha
-router.get('/hoy/:hoy', auth, async (req, res) => {
-    res.json(await dataReserva.getReservasPorFecha(req.params.hoy));
+router.get('/:hoy', auth, async (req, res) => {
+    res.json(await dataReserva.getReservasPorFecha());
 });
 
-// GET de una reserva especifica, para buscar una reserva en particular.
-router.get('/:id', auth, async (req, res) => {
-  try{
-    res.json(await dataReserva.getReserva(req.params.id));
-  }catch(error){
-    res.status(400).send(error.message);
-  }
-});
 
 router.get('/miReserva/:email', auth, async (req, res) => {
   res.json(await dataReserva.getMiReserva(req.params.email));
